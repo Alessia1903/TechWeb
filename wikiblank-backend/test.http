@@ -1,0 +1,84 @@
+### VARIABILI GLOBALI
+@baseUrl = http://localhost:3000
+# Sostituisci questa stringa con il token reale dopo aver fatto il login!
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicGxheWVyMSIsImlhdCI6MTc3OTY2MTc2MiwiZXhwIjoxNzc5NzQ4MTYyfQ.vOCzuhZt79dfizZpVOjChvZg7wuZwg_hU1hPzhs6dzk
+
+### ==========================================
+### 1. AUTENTICAZIONE E UTENTI
+### ==========================================
+
+### Registrazione nuovo utente
+POST {{baseUrl}}/signup
+Content-Type: application/json
+
+{
+  "usr": "player1",
+  "pwd": "passwordSegreta123"
+}
+
+###
+
+### Login utente (Copia il token dalla risposta e incollalo in alto su @authToken!)
+POST {{baseUrl}}/auth
+Content-Type: application/json
+
+{
+  "usr": "player1",
+  "pwd": "passwordSegreta123"
+}
+
+
+### ==========================================
+### 2. ROTTE PUBBLICHE (Senza Token)
+### ==========================================
+
+### Guarda la classifica
+GET {{baseUrl}}/leaderboard
+
+###
+
+### Guarda l'archivio delle partite concluse
+GET {{baseUrl}}/archive
+
+### Visualizza una partita archiviata (Vinta)
+# @prompt idPartita Inserisci l'ID della partita
+GET {{baseUrl}}/archive/{{idPartita}}
+
+
+### ==========================================
+### 3. IL GIOCO (Richiede il Token JWT)
+### ==========================================
+
+### Inizia una nuova partita
+POST {{baseUrl}}/games/start
+Authorization: Bearer {{authToken}}
+
+###
+
+### Visualizza lo storico delle mie partite
+GET {{baseUrl}}/games
+Authorization: Bearer {{authToken}}
+
+###
+
+### Recupera una singola partita
+# @prompt idPartita Inserisci l'ID della partita
+GET {{baseUrl}}/games/{{idPartita}}
+Authorization: Bearer {{authToken}}
+
+### Prova a indovinare una parola (Sostituisci l'ID con quello della tua partita)
+# @prompt idPartita Inserisci l'ID della partita
+POST {{baseUrl}}/games/{{idPartita}}/guess
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "word": "oceania"
+}
+
+###
+
+### Arrenditi in una partita specifica
+# @prompt idPartita Inserisci l'ID della partita
+POST {{baseUrl}}/games/{{idPartita}}/surrender
+Authorization: Bearer {{authToken}}
