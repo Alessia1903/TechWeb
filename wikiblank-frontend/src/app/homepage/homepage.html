@@ -1,0 +1,41 @@
+<div class="homepage-container">
+  <header>
+    <h1>Classifica Globale di WikiBlank 🏆</h1>
+    <p>I giocatori più veloci e letali di sempre.</p>
+  </header>
+
+  @if (isLoading) {
+    <div class="loading-message">
+      <p>Caricamento della classifica in corso...</p>
+    </div>
+  } @else {
+    <table class="leaderboard-table">
+      <thead>
+        <tr>
+          <th># Rank</th>
+          <th>Giocatore</th>
+          <th>Vittorie</th>
+          <th>Tempo Medio</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (player of leaderboard; track player.username; let i = $index) {
+          <tr>
+            <td><strong>{{ i + 1 }}</strong></td>
+            <td>{{ player.username }}</td>
+            <td>{{ player.wins }}</td>
+            <td>{{ formatTime(player.averageTimeMs) }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+  <div class="archive-promo-section">
+  <h3>Curioso di vedere come se la sono cavata gli altri giocatori?</h3>
+  <p>Scopri quali parole hanno indovinato e quanto tempo ci hanno messo.</p>
+  
+  <button routerLink="/archive" class="btn-archive">
+    📚 Esplora l'Archivio Partite Concluse
+  </button>
+</div>
+</div>

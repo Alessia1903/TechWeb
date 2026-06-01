@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
 import { database } from './models/Database';
 import { authenticationRouter } from './routers/authRouter';
 import { publicRouter } from './routers/publicRouter';
@@ -10,7 +11,8 @@ const PORT = process.env.PORT || 3000;
 
 // MIDDLEWARE DI BASE: permette a Express di leggere i dati JSON inviati nel req.body (come usr e pwd)
 app.use(express.json());
-
+// MIDDLEWARE CORS: consente al frontend (che gira su un dominio/porta diversa) di comunicare con questo backend
+app.use(cors());
 // ROTTE PUBBLICHE: (login e signup) accessibili a tutti senza token
 app.use('/', authenticationRouter);
 app.use('/', publicRouter);

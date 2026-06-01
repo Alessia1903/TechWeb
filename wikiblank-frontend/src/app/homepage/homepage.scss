@@ -1,0 +1,34 @@
+.archive-promo-section {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f8f9fa; /* Grigio chiaro per staccare dal resto */
+  border-radius: 8px;
+
+  h3 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  p {
+    margin-bottom: 20px;
+    color: #666;
+  }
+
+  .btn-archive {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    background-color: #007bff; /* Blu accattivante */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+
+    &:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+  }
+}

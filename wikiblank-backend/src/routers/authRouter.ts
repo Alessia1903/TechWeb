@@ -34,7 +34,7 @@ authenticationRouter.post("/auth", async (req: Request, res: Response) => {
   let isAuthenticated = await AuthController.checkCredentials(req, res);
   
   if (isAuthenticated) {
-    res.json(AuthController.issueToken(req.body.usr));
+    res.json({ token: AuthController.issueToken(req.body.usr) });
   } else {
     res.status(401);
     res.json({ error: "Invalid credentials. Try again." });

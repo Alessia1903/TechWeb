@@ -1,0 +1,81 @@
+<div class="games-dashboard-container">
+  <header>
+    <h2>Le Mie Partite 🎮</h2>
+    <p>Gestisci le tue sfide e analizza i tuoi tempi.</p>
+  </header>
+
+  @if (isLoading) {
+    <div class="loading">Caricamento storico...</div>
+  } @else {
+    
+    <section class="action-section">
+      @if (activeGame) {
+        <div class="active-game-card">
+          <h3>Hai una partita in sospeso!</h3>
+          <p>Iniziata il: {{ activeGame.startTime | date:'dd/MM/yyyy HH:mm' }}</p>
+          <button class="btn-resume" (click)="resumeGame(activeGame.id)">
+            ▶ Riprendi Partita
+          </button>
+        </div>
+      } @else {
+        <div class="new-game-card">
+          <h3>Sei pronto per una nuova sfida?</h3>
+          <button class="btn-start" (click)="startNewGame()">
+            ➕ Inizia Nuova Partita
+          </button>
+        </div>
+      }
+    </section>
+
+    <section class="history-section">
+      <h3>Storico Giocate</h3>
+      
+      @if (games.length === 0) {
+        <p class="no-data">Non hai ancora giocato nessuna partita.</p>
+      } @else {
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Titolo Articolo</th>
+              <th>Stato</th>
+              <th>Tempo Impiegato</th>
+              <th>Tentativi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Attenzione: ora iteriamo su 'paginatedGames' invece di 'games' -->
+            @for (game of paginatedGames; track game.id) {
+              <tr>
+                <td><strong>{{ game.articleTitle }}</strong></td>
+                <td>{{ formatDuration(game.startTime, game.endTime) }}</td>
+                
+                <td>
+                  @if (game.status === 'IN_PROGRESS') {
+                    <span class="badge warning">In Corso</span>
+                  } @else if (game.status === 'WON') {
+                    <span class="badge success">Vinta 🏆</span>
+                  } @else if (game.status === 'SURRENDERED') {
+                    <span class="badge danger">Arresa 🏳️</span>
+                  }
+                </td>
+                
+                <td>{{ game.attemptsCount || 0 }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <!-- Controlli di paginazione -->
+        <div class="pagination-controls">
+          <button class="btn-page" [disabled]="currentPage === 1" (click)="prevPage()">
+            ⬅️ Precedente
+          </button>
+          <span class="page-info">Pagina {{ currentPage }} di {{ totalPages }}</span>
+          <button class="btn-page" [disabled]="currentPage === totalPages" (click)="nextPage()">
+            Successiva ➡️
+          </button>
+        </div>
+      }
+    </section>
+  }
+</div>

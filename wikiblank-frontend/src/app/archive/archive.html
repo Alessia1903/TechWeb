@@ -1,0 +1,58 @@
+<div class="archive-container">
+  
+  <div class="header">
+    <h1>📚 Archivio Partite</h1>
+    <p>Esplora lo storico delle sfide concluse dalla community di WikiBlank.</p>
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-state">
+      <p>⏳ Recupero dati dall'archivio in corso...</p>
+    </div>
+  }
+
+  @if (!isLoading && archivedGames.length === 0) {
+    <div class="empty-state">
+      <p>Nessuna partita è stata ancora conclusa. Sii il primo a lasciare il segno!</p>
+      <button routerLink="/home" class="btn-play">Vai a giocare</button>
+    </div>
+  }
+
+  @if (!isLoading && archivedGames.length > 0) {
+    <div class="table-responsive">
+      <table class="archive-table">
+        <thead>
+          <tr>
+            <th>Partita #</th>
+            <th>Giocatore</th>
+            <th>Esito</th>
+            <th>Tentativi</th>
+            <th>Tempo</th>
+            <th>Data e Ora</th>
+            <th>Azione</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          @for (game of archivedGames; track game.id) {
+            <tr>
+              <td>{{ game.id }}</td>
+              <td><strong>{{ game.player }}</strong></td>
+              <td>{{ translateStatus(game.status) }}</td>
+              <td>{{ game.attemptsCount }}</td>
+              <td>{{ formatTime(game.timeTakenMs) }}</td>
+              <td>{{ game.endTime | date:'dd/MM/yyyy, HH:mm' }}</td>
+              
+              <td>
+                <button [routerLink]="['/archive', game.id]" class="btn-details">
+                  🔍 Vedi Dettagli
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>

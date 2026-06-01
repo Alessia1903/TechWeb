@@ -1,7 +1,7 @@
 ### VARIABILI GLOBALI
 @baseUrl = http://localhost:3000
 # Sostituisci questa stringa con il token reale dopo aver fatto il login!
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicGxheWVyMSIsImlhdCI6MTc3OTY2MTc2MiwiZXhwIjoxNzc5NzQ4MTYyfQ.vOCzuhZt79dfizZpVOjChvZg7wuZwg_hU1hPzhs6dzk
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicGxheWVyMSIsImlhdCI6MTc3OTg3ODQ0NiwiZXhwIjoxNzc5OTY0ODQ2fQ.keW7fYM5CltWH83nrf6bx23h9N_pnbNHs5E6Wp_uops
 
 ### ==========================================
 ### 1. AUTENTICAZIONE E UTENTI
@@ -73,7 +73,7 @@ Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "word": "oceania"
+  "word": "Hood"
 }
 
 ###

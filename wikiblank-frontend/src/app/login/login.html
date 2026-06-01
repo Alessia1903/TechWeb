@@ -1,0 +1,22 @@
+<div class="login-container">
+  <h2>Accedi a WikiBlank</h2>
+
+  <form [formGroup]="loginForm" (ngSubmit)="handleLogin()">
+    
+    <div class="form-group">
+      <label for="usr">Username</label>
+      <input id="usr" type="text" formControlName="usr" placeholder="Es. player1">
+    </div>
+
+    <div class="form-group">
+      <label for="pwd">Password</label>
+      <input id="pwd" type="password" formControlName="pwd" placeholder="La tua password">
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid">Entra nel gioco</button>
+  </form>
+
+  <p style="margin-top: 15px; text-align: center;">
+    Non hai ancora un account? <a routerLink="/signup">Registrati qui</a>
+  </p>
+</div>

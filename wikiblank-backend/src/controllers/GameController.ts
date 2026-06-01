@@ -13,7 +13,8 @@ export class GameController {
     }
     const games: any = await Game.findAll({
       where: { userId: (user as any).id },
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
+      attributes: { exclude: ['originalText'] }
     });
     return games.map((game: any) => {
     const gameData = game.toJSON();
@@ -21,7 +22,6 @@ export class GameController {
     if (gameData.status === 'IN_PROGRESS') {
       const guessed = gameData.guessedWords || [];
       gameData.articleTitle = this.obscureText(gameData.articleTitle, guessed);
-      gameData.originalText = this.obscureText(gameData.originalText, guessed);
     }
 
     return gameData;
@@ -78,7 +78,7 @@ export class GameController {
       "Lilo & Stitch",
       "Rapunzel - L'intreccio della torre",
       "Frozen - Il regno di ghiaccio",
-      "Oceania (film)"
+      "Oceania (film 2016)"
     ];
 
     const randomIndex = Math.floor(Math.random() * articlePool.length);
@@ -91,8 +91,12 @@ export class GameController {
     const pages = data.query.pages;
     const pageId = Object.keys(pages)[0];
     const article = pages[pageId];
+
+    // Non voglio che la specifica delle parentesi faccia parte del titolo da indovinare
+    const cleanTitle = article.title.replace(/\s*\(.*?\)/g, '').trim();
+
     return {
-      title: article.title,
+      title: cleanTitle,
       text: article.extract
     };
   }
@@ -203,13 +207,13 @@ export class GameController {
       where: {
         status: ['WON', 'SURRENDERED'] 
       },
-      include: [{ model: User, attributes: ['username'] }], 
+      include: [{ model: User, attributes: ['userName'] }], 
       order: [['endTime', 'DESC']] // dalle più recenti
     });
 
     return games.map((g: any) => ({
       id: g.id,
-      player: g.User ? g.User.username : 'Anonimo',
+      player: g.User ? g.User.userName : 'Anonimo',
       status: g.status,
       attemptsCount: g.attemptsCount,
       timeTakenMs: g.endTime.getTime() - g.startTime.getTime(),
@@ -220,7 +224,7 @@ export class GameController {
   static async getCompletedGameDetails(req: Request) {
     const gameId = req.params.id as string;
     const game: any = await Game.findByPk(gameId, {
-      include: [{ model: User, attributes: ['username'] }]
+      include: [{ model: User, attributes: ['userName'] }]
     });
     if (!game || game.status === 'IN_PROGRESS') {
       throw new Error("Partita non trovata o non ancora conclusa");
@@ -229,7 +233,7 @@ export class GameController {
     const guessedWords: string[] = game.guessedWords || [];
     return {
       id: game.id,
-      player: game.User ? game.User.username : 'Anonimo',
+      player: game.User ? game.User.userName : 'Anonimo',
       status: game.status,
       attemptsCount: game.attemptsCount,
       timeTakenMs: game.endTime.getTime() - game.startTime.getTime(),

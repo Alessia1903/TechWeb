@@ -1,0 +1,297 @@
+.wiki-text {
+  line-height: 1.8;
+  color: #333;
+  font-size: 1.1rem;
+  text-align: justify;
+
+  /* Stile per i Titoli principali (==) */
+  h2 {
+    font-size: 1.6rem;
+    color: #000;
+    border-bottom: 1px solid #a2a9b1; /* La classica riga grigia di Wikipedia */
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+  }
+
+  /* Stile per i Sottotitoli (===) */
+  h3 {
+    font-size: 1.3rem;
+    color: #222;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+  }
+
+  /* Stile per i paragrafi */
+  p {
+    margin-bottom: 1.2em;
+  }
+
+  /* Stile per le liste */
+  .wiki-list-item {
+    margin-left: 20px;
+    margin-bottom: 0.5em;
+  }
+}
+
+// Variabili colore (puoi personalizzarle)
+$primary-color: #007bff;
+$primary-hover: #0056b3;
+$danger-color: #dc3545;
+$danger-hover: #c82333;
+$success-color: #28a745;
+$background-light: #f8f9fa;
+$border-color: #dee2e6;
+$text-main: #333;
+$text-muted: #6c757d;
+
+.play-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: sans-serif;
+  color: $text-main;
+
+  .loading {
+    text-align: center;
+    font-size: 1.2rem;
+    color: $text-muted;
+    margin-top: 3rem;
+  }
+
+  // HEADER DELLA PARTITA
+  .game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $background-light;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid $border-color;
+
+    h2 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+
+    p {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .btn-surrender {
+      background-color: $danger-color;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: $danger-hover;
+      }
+    }
+  }
+
+  // TITOLO WIKIPEDIA
+  .wiki-title {
+    font-size: 2.5rem;
+    border-bottom: 1px solid #a2a9b1;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Georgia', serif; // I titoli di Wikipedia spesso hanno un tocco graziato
+
+    &.correct {
+      color: $success-color;
+    }
+  }
+
+  // FORM DI TENTATIVO
+  .guess-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 2rem;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+    input {
+      flex: 1;
+      padding: 12px 16px;
+      font-size: 1.1rem;
+      border: 2px solid $border-color;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s;
+
+      &:focus {
+        border-color: $primary-color;
+      }
+    }
+
+    button {
+      padding: 0 24px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover:not(:disabled) {
+        background-color: $primary-hover;
+      }
+
+      &:disabled {
+        background-color: #a0c4ff;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  // PAROLE INDOVINATE (BADGES)
+  .guessed-words-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px dashed $border-color;
+
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: #555;
+    }
+
+    .words-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      p {
+        color: $text-muted;
+        font-style: italic;
+      }
+    }
+
+    .word-badge {
+      background-color: #e2e8f0;
+      color: #1a202c;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+  }
+
+  // SCHEDA PARTITA CONCLUSA (GAME OVER)
+  .game-over-card {
+    text-align: center;
+    background-color: #fff3cd; // Giallo tenue per la resa
+    border: 2px solid #ffeeba;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+
+    &.completed {
+      background-color: #d4edda; // Verde per la vittoria
+      border-color: #c3e6cb;
+      color: #155724;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.8rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-back {
+      background-color: $text-main;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #000;
+      }
+    }
+  }
+}
+
+// Media Query per schermi piccoli (Cellulari)
+@media (max-width: 600px) {
+  .play-container {
+    .game-header {
+      flex-direction: column;
+      gap: 15px;
+      text-align: center;
+      
+      .btn-surrender {
+        width: 100%;
+      }
+    }
+
+    .guess-form {
+      flex-direction: column;
+      
+      button {
+        padding: 12px;
+      }
+    }
+  }
+}
+
+.wiki-text {
+  line-height: 1.8;
+  color: #222;
+  font-size: 1.1rem;
+  text-align: justify;
+
+  p {
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    color: #000;
+    border-bottom: 1px solid #a2a9b1;
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    font-family: 'Georgia', serif;
+  }
+
+  /* Forza lo stile sulle liste iniettate dalla Pipe */
+  ::ng-deep ul.wiki-list {
+    display: block !important;
+    list-style-type: disc !important;
+    list-style-position: inside !important; // Mantiene il pallino visibile dentro il testo
+    padding-left: 1.5rem !important;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+
+    li {
+      display: list-item !important;
+      margin-bottom: 0.8rem; // Più spazio tra un personaggio/link e l'altro
+      line-height: 1.6;
+      color: #222;
+      text-align: left;
+    }
+  }
+}

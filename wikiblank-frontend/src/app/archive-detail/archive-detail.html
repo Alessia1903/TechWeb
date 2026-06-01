@@ -1,0 +1,41 @@
+<div class="detail-container">
+  
+  <button routerLink="/archive" class="btn-back">⬅ Torna all'Archivio</button>
+
+  @if (isLoading) {
+    <div class="loading">⏳ Caricamento dettagli...</div>
+  }
+
+  @if (!isLoading && gameDetails) {
+    <div class="game-card">
+      
+      <div class="card-header">
+        <h1>Articolo: {{ gameDetails.correctTitle }}</h1>
+        <p class="subtitle">Giocata da <strong>{{ gameDetails.player }}</strong></p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <span class="label">Esito</span>
+          <span class="value">{{ translateStatus(gameDetails.status) }}</span>
+        </div>
+        <div class="stat-box">
+          <span class="label">Tentativi</span>
+          <span class="value">{{ gameDetails.attemptsCount }}</span>
+        </div>
+        <div class="stat-box">
+          <span class="label">Tempo Impiegato</span>
+          <span class="value">{{ formatTime(gameDetails.timeTakenMs) }}</span>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="text-section">
+        <h3>Testo Finale</h3>
+        <div class="wiki-text" [innerHTML]="gameDetails.partiallyObscuredText | wikiFormat"></div>
+      </div>
+      
+    </div>
+  }
+</div>

@@ -1,0 +1,33 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <img src="/assets/logo.png" alt="Logo" class="logo">
+  </div>
+
+  <button class="mobile-toggle" (click)="toggle()">
+    ☰ Menu
+  </button>
+
+  <div class="navbar-menu" [class.open]="isOpen">
+    
+    @if (authService.isAuthenticated()) {
+      <a routerLink="/games" routerLinkActive="active" (click)="handleNavigationClick()">
+        <img src="/assets/home-icon.png" alt="Home" class="nav-icon">
+        Home
+      </a>
+
+      <a routerLink="/homepage" routerLinkActive="active" (click)="handleNavigationClick()">
+        <img src="/assets/classifica-icon.png" alt="Classifica" class="nav-icon">
+        Classifica
+      </a>
+      <button class="logout-btn" (click)="logout()">
+        <img src="/assets/logout-icon.png" alt="Esci" class="logout-icon">
+        Esci
+      </button>
+      
+    } @else {
+      <a routerLink="/login" routerLinkActive="active" (click)="handleNavigationClick()">Accedi</a>
+      <a routerLink="/signup" class="signup-btn" routerLinkActive="active" (click)="handleNavigationClick()">Registrati</a>
+    }
+    
+  </div>
+</nav>

@@ -1,0 +1,134 @@
+// Variabili per gestire facilmente le animazioni
+$transition-speed: 0.3s;
+$hover-scale: 1.15; // Ingrandisce del 15%
+
+.navbar {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem 2rem;
+  background-color: #7ed957; 
+  color: white;
+  border-radius: 0 0 20px 20px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  // ==========================================
+  // PARTE SINISTRA: LOGO
+  // ==========================================
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+
+    .logo {
+      height: 45px; // Regola in base alla dimensione del tuo PNG
+      width: auto;
+      object-fit: contain;
+    }
+
+    span {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  }
+
+  // ==========================================
+  // PARTE DESTRA: MENU E ANIMAZIONI
+  // ==========================================
+  .navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 30px; // Distanza tra Home, Classifica e Logout
+
+    // Applichiamo le regole in blocco ai link e al bottone
+    a, .logout-btn {
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px; // Spazio tra icona logout e testo
+      
+      // Resettiamo gli stili del bottone per farlo sembrare un link
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 5px;
+
+      // La magia della transizione fluida
+      transition: transform $transition-speed ease, 
+                  font-weight $transition-speed ease, 
+                  text-decoration $transition-speed ease;
+
+      &:hover {
+        transform: scale($hover-scale);
+        font-weight: bold;
+      }
+
+      &.active {
+        transform: scale($hover-scale);
+        font-weight: bold;
+        text-decoration: underline;
+        text-underline-offset: 6px; // Abbassa la sottolineatura per renderla più elegante
+        text-decoration-thickness: 2px; // Spessore della sottolineatura
+      }
+
+      // Gestione dimensione dell'icona di logout
+      .logout-icon, .logout-icon, .nav-icon {
+        height: 30px;
+        width: auto;
+      }
+    }
+
+    // Effetto rosso opzionale per il logout al passaggio del mouse
+    .logout-btn:hover {
+      color: #ff4c4c;
+    }
+  }
+
+  // Nasconde l'hamburger sul computer
+  .mobile-toggle {
+    display: none; 
+  }
+}
+
+// ==========================================
+// RESPONSIVE MOBILE (Sotto i 768px)
+// ==========================================
+@media screen and (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+
+    .mobile-toggle {
+      display: block;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .navbar-menu {
+      display: none; // Nascosto di default
+      flex-direction: column;
+      width: 100%;
+      margin-top: 20px;
+      gap: 20px;
+
+      // Ripristina l'allineamento per il cellulare
+      a, .logout-btn {
+        justify-content: flex-start;
+        width: 100%;
+      }
+
+      &.open {
+        display: flex; // Appare quando si clicca l'hamburger
+      }
+    }
+  }
+}
