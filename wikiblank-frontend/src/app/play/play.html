@@ -4,47 +4,61 @@
   } @else {
 
     @if (gameData.status === 'IN_PROGRESS') {
-      <header class="game-header">
-        <h2>Partita #{{ gameData.id }} 🧩</h2>
-        <p>Tentativi effettuati: <strong>{{ gameData.attemptsCount }}</strong></p>
-        <button class="btn-surrender" (click)="handleSurrender()">🏳️ Arrenditi</button>
-      </header>
+      
+      <div class="game-layout">
+        
+        <div class="left-column">
+          <h1 class="wiki-title">{{ gameData.obscuredTitle }}</h1>
 
-      <h1 class="wiki-title">{{ gameData.obscuredTitle }}</h1>
-
-      <form [formGroup]="guessForm" (ngSubmit)="handleGuess()" class="guess-form">
-        <input type="text" formControlName="word" placeholder="Inserisci una parola..." autocomplete="off">
-        <button type="submit" [disabled]="guessForm.invalid">Tenta</button>
-      </form>
-
-      @if (gameData) {
-        <div class="wiki-text" [innerHTML]="gameData.obscuredText | wikiFormat"></div>
-      } @else {
-        <p>⏳ Caricamento del testo in corso...</p>
-      }
-
-      <div class="guessed-words-section">
-        <h3>Parole indovinate finora:</h3>
-        <div class="words-badges">
-          @for (word of gameData.guessedWords; track word) {
-            <span class="word-badge">{{ word }}</span>
-          } @empty {
-            <p>Nessuna parola indovinata ancora. Comincia a digitare!</p>
+          @if (gameData) {
+            <div class="wiki-text" [innerHTML]="gameData.obscuredText | wikiFormat"></div>
+          } @else {
+            <p>⏳ Caricamento del testo in corso...</p>
           }
         </div>
+
+        <div class="right-column">
+          
+          <header class="game-stats-header">
+            <p>Tentativi: <strong>{{ gameData.attemptsCount }}</strong></p>
+            <button class="btn-surrender" (click)="handleSurrender()">🏳️ Arrenditi</button>
+          </header>
+
+          <form [formGroup]="guessForm" (ngSubmit)="handleGuess()" class="guess-form">
+            <input type="text" formControlName="word" placeholder="Inserisci una parola..." autocomplete="off">
+            <button type="submit" [disabled]="guessForm.invalid">Tenta</button>
+          </form>
+
+          <div class="guessed-words-section">
+            <h3>
+              Parole indovinate finora:
+              <span class="words-count">{{ gameData.guessedWords.length }}</span>
+            </h3>
+            <div class="words-badges">
+              @for (word of gameData.guessedWords; track word) {
+                <span class="word-badge">{{ word }}</span>
+              } @empty {
+                <p class="empty-state">Nessuna parola indovinata ancora. Comincia a digitare!</p>
+              }
+            </div>
+          </div>
+
+        </div>
       </div>
+
     } 
     
     @else {
       <div class="game-over-card" [class.completed]="gameData.status === 'WON'">
-        <h2>Partita Conclusa! Stato: {{ gameData.status }}</h2>
+        <h2>Partita Conclusa: {{ gameData.status === 'WON' ? 'Vittoria! 🏆' : 'Resa 🏳️' }}</h2>
         <p>Hai completato la sfida in <strong>{{ gameData.attemptsCount }}</strong> tentativi totali.</p>
-        <button routerLink="/games" class="btn-back">⬅️ Torna alle mie partite</button>
+        <button routerLink="/games" class="btn-back">Torna alla Home</button>
       </div>
 
-      <h1 class="wiki-title correct">{{ gameData.correctTitle }}</h1>
-      
-      <div class="wiki-text" [innerHTML]="gameData.fullText | wikiFormat"></div>
+      <div class="wiki-content-box">
+        <h1 class="wiki-title correct">{{ gameData.correctTitle }}</h1>
+        <div class="wiki-text" [innerHTML]="gameData.fullText | wikiFormat"></div>
+      </div>
     }
 
   }

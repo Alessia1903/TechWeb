@@ -17,6 +17,7 @@ export class HomepageComponent implements OnInit {
 
   // Variabili per gestire i dati e lo stato della pagina
   leaderboard: any[] = [];
+  currentUserFallback: any = null;
   isLoading = true; // Ci serve per mostrare un "Caricamento..." finché i dati non arrivano
 
   // ngOnInit scatta in automatico appena la pagina si apre
@@ -26,8 +27,11 @@ export class HomepageComponent implements OnInit {
 
   fetchLeaderboard() {
     this.restService.getLeaderboard().subscribe({
-      next: (data) => {
-        this.leaderboard = data;
+      next: (data: any) => {
+        console.log("Dati grezzi dal backend:", data);
+        this.leaderboard = data.top10; // Assegniamo solo l'array dei primi 10
+        this.currentUserFallback = data.currentUserFallback; // Salviamo il ripescaggio
+        
         this.isLoading = false; // Caricamento finito!
       },
       error: (err) => {
@@ -37,11 +41,30 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  // Funzione per trasformare i millisecondi in "Xm Ys" (es. "2m 15s")
-  formatTime(ms: number): string {
-    const totalSeconds = Math.floor(ms / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes}m ${seconds}s`;
+  // Nuova versione: prende i millisecondi (ms) e usa la logica avanzata
+  formatTime(ms: number | null | undefined): string {
+    // 1. Controllo base: se non c'è un tempo valido o è negativo
+    if (ms === null || ms === undefined || isNaN(ms) || ms < 0) {
+      return '---';
+    }
+
+    // 2. CALCOLO CON LE ORE INCLUSE
+    const hours = Math.floor(ms / (1000 * 60 * 60));
+    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+
+    // 3. COSTRUZIONE STRINGA DINAMICA
+    let timeString = '';
+    
+    if (hours > 0) {
+      timeString += `${hours}h `;
+    }
+    if (minutes > 0 || hours > 0) { // Mostra i minuti se ci sono ore, anche se sono 0 (es. 1h 0m)
+      timeString += `${minutes}m `;
+    }
+    
+    timeString += `${seconds}s`;
+
+    return timeString.trim() || '0s'; // Aggiunto un fallback se il tempo è esattamente 0 millisecondi
   }
 }

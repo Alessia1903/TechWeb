@@ -25,8 +25,14 @@
       </button>
       
     } @else {
-      <a routerLink="/login" routerLinkActive="active" (click)="handleNavigationClick()">Accedi</a>
-      <a routerLink="/signup" class="signup-btn" routerLinkActive="active" (click)="handleNavigationClick()">Registrati</a>
+      <a routerLink="/login" routerLinkActive="active" (click)="handleNavigationClick()">
+        <img src="/assets/login-icon.png" alt="Esci" class="nav-icon">
+        Accedi
+      </a>
+      <a routerLink="/signup" class="signup-btn" routerLinkActive="active" (click)="handleNavigationClick()">
+        <img src="/assets/signup-icon.png" alt="Registrati" class="nav-icon">
+        Registrati
+      </a>
     }
     
   </div>

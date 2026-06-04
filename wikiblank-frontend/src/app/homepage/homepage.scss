@@ -1,34 +1,258 @@
-.archive-promo-section {
-  text-align: center;
-  margin-top: 40px;
-  padding: 20px;
-  background-color: #f8f9fa; /* Grigio chiaro per staccare dal resto */
-  border-radius: 8px;
+.homepage-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-  h3 {
-    margin-bottom: 10px;
-    color: #333;
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    h1 {
+      font-size: 2.4rem;
+      color: #2c3e50;
+      margin-bottom: 0.6rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    p {
+      font-size: 1.15rem;
+      color: #7f8c8d;
+      font-weight: 400;
+    }
   }
 
-  p {
-    margin-bottom: 20px;
-    color: #666;
+  /* MESSAGGIO DI CARICAMENTO */
+  .loading-message {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eaeaea;
+    
+    p {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #3498db;
+    }
   }
 
-  .btn-archive {
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: white;
-    background-color: #007bff; /* Blu accattivante */
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s;
+  /* TABELLA DELLA CLASSIFICA (LEADERBOARD) */
+  .leaderboard-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e1e8ed;
+    overflow: hidden; // Mantiene gli angoli arrotondati della tabella
+    margin-bottom: 1.5rem; /* L'ho ridotto un po' per far avvicinare la card utente */
 
-    &:hover {
-      background-color: #0056b3;
-      transform: scale(1.05);
+    thead {
+      tr {
+        background-color: #f8f9fa;
+        
+        th {
+          padding: 1.2rem 1rem;
+          font-weight: 700;
+          color: #47525e;
+          border-bottom: 2px solid #e1e8ed;
+          text-transform: uppercase;
+          font-size: 0.85rem;
+          letter-spacing: 0.8px;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        transition: background-color 0.2s ease, transform 0.15s ease;
+        border-bottom: 1px solid #f0f3f5;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &:hover {
+          background-color: #f4f8fb; // Effetto evidenziatore al passaggio del mouse
+        }
+
+        td {
+          padding: 1.2rem 1rem;
+          vertical-align: middle;
+          font-size: 1.05rem;
+          color: #333;
+          font-weight: 500;
+          text-align: center;
+
+          // Rende lo username leggermente più marcato
+          &:nth-child(2) {
+            color: #2c3e50;
+            font-weight: 600;
+          }
+        }
+
+        /* --- EFFETTO PODIO SPECIALE PER I PRIMI 3 POSTI --- */
+        &:nth-child(1) { // 1° Posto - ORO 🥇
+          background-color: rgba(241, 196, 15, 0.04);
+          td:first-child strong {
+            color: #d4ac0d;
+            background-color: #fef9e7;
+            padding: 0.3rem 0.7rem;
+            border-radius: 50%;
+            border: 1px solid #fad7a1;
+          }
+        }
+
+        &:nth-child(2) { // 2° Posto - ARGENTO 🥈
+          background-color: rgba(189, 195, 199, 0.04);
+          td:first-child strong {
+            color: #7f8c8d;
+            background-color: #f2f4f4;
+            padding: 0.3rem 0.7rem;
+            border-radius: 50%;
+            border: 1px solid #d5dbdb;
+          }
+        }
+
+        &:nth-child(3) { // 3° Posto - BRONZO 🥉
+          background-color: rgba(230, 126, 34, 0.04);
+          td:first-child strong {
+            color: #ca6f1e;
+            background-color: #fdf2e9;
+            padding: 0.3rem 0.7rem;
+            border-radius: 50%;
+            border: 1px solid #fadbd8;
+          }
+        }
+      }
+    }
+  }
+
+  /* --- NUOVA: CARD DELL'UTENTE CORRENTE (RIPESCAGGIO) --- */
+  .user-fallback-card {
+    background-color: #f4fbf0; 
+    border: 2px dashed #7ed957; /* Bordo tratteggiato con il colore del tuo brand */
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    margin-bottom: 3.5rem; /* Margine per staccarlo dalla sezione archivio */
+    box-shadow: 0 4px 15px rgba(126, 217, 87, 0.1);
+
+    p {
+      font-size: 1.15rem;
+      color: #2c3e50;
+      margin: 0;
+
+      strong {
+        color: #5ba83e; 
+        font-size: 1.25rem;
+      }
+
+      small {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.95rem;
+        color: #64748b;
+      }
+    }
+  }
+
+  /* SEZIONE PROMOZIONALE ARCHIVIO (CALL TO ACTION) */
+  .archive-promo-section {
+    background: linear-gradient(135deg, #fdfbf7 0%, #f5f7fa 100%);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+
+    h3 {
+      font-size: 1.35rem;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    p {
+      color: #64748b;
+      margin-bottom: 1.8rem;
+      font-size: 1.05rem;
+    }
+
+    /* BOTTONE ARCHIVIO */
+    .btn-archive {
+      display: inline-block;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      background-color: #3498db;
+      padding: 0.9rem 2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(52, 152, 219, 0.35);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+/* --- ADATTAMENTO PER SCHERMI PICCOLI (MOBILE) --- */
+@media (max-width: 768px) {
+  .homepage-container {
+    padding: 1.5rem 1rem;
+
+    header {
+      margin-bottom: 2rem;
+      h1 { font-size: 1.9rem; }
+      p { font-size: 1rem; }
+    }
+
+    .leaderboard-table {
+      display: block;
+      overflow-x: auto; // Permette lo swipe laterale se i nomi sono troppo lunghi
+      white-space: nowrap; // Evita che il testo vada a capo forzatamente rompendo la tabella
+      
+      th, td {
+        padding: 1rem 0.8rem;
+        font-size: 0.95rem;
+      }
+    }
+
+    /* Adattamento su mobile per la card ripescaggio */
+    .user-fallback-card {
+      padding: 1.2rem;
+      margin-bottom: 2.5rem;
+      
+      p {
+        font-size: 1rem;
+        strong { font-size: 1.1rem; }
+      }
+    }
+
+    .archive-promo-section {
+      padding: 2rem 1rem;
+      h3 { font-size: 1.2rem; }
+      p { font-size: 0.95rem; }
+      .btn-archive {
+        width: 100%; // Il bottone diventa a schermo intero su mobile per essere cliccato più facilmente
+        padding: 0.9rem 1rem;
+        font-size: 1rem;
+      }
     }
   }
 }

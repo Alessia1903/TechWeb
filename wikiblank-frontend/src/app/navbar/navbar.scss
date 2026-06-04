@@ -12,7 +12,11 @@ $hover-scale: 1.15; // Ingrandisce del 15%
   background-color: #7ed957; 
   color: white;
   border-radius: 0 0 20px 20px; 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0; 
+  z-index: 1000; 
 
   // ==========================================
   // PARTE SINISTRA: LOGO
@@ -79,7 +83,7 @@ $hover-scale: 1.15; // Ingrandisce del 15%
       }
 
       // Gestione dimensione dell'icona di logout
-      .logout-icon, .logout-icon, .nav-icon {
+      .logout-icon, .nav-icon {
         height: 30px;
         width: auto;
       }

@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RestBackendService } from '../services/rest-backend/rest-backend';
 import { ToastrService } from 'ngx-toastr';
 import { WikiFormatPipe } from '../shared/pipes/wiki-format-pipe';
+import confetti from 'canvas-confetti';
 
 @Component({
   selector: 'app-play',
@@ -54,20 +55,28 @@ export class PlayComponent implements OnInit {
     });
   }
 
-  // Gestisce l'invio di una parola
   handleGuess() {
     if (this.guessForm.invalid) return;
-
     const guessedWord = this.guessForm.value.word as string;
 
     // Chiamiamo l'API del backend per verificare la parola
     this.restService.guessWord(this.gameId, guessedWord).subscribe({
       next: (response: any) => {
-        // Se la parola era presente nel testo, il backend ci avviserà (adatta in base alla tua risposta JSON)
-        this.toastr.success(`Tentativo registrato per: "${guessedWord}"`, "Parola Inviata");
         
         this.guessForm.reset(); // Svuota la casella di testo
-        this.loadGame(); // Ricarichiamo la partita per vedere il testo aggiornato con le nuove parole scoperti!
+        
+        // 1. Il backend ci dice che abbiamo vinto? Coriandoli istantanei! 🎉
+        if (response.victory) {
+          this.triggerConfetti();
+        }
+
+        // 2. Opzionale ma carino: se ha indovinato una parola normale, mostriamo un piccolo toast verde
+        if (response.correct && !response.victory) {
+          this.toastr.success("Parola trovata!", "Ottimo");
+        }
+
+        // 3. Ricarichiamo la partita per vedere il testo aggiornato e la nuova parola nella lista
+        this.loadGame(); 
       },
       error: (err) => {
         this.toastr.error("Errore durante l'invio del tentativo.", "Ops!");
@@ -77,20 +86,27 @@ export class PlayComponent implements OnInit {
 
   // Gestisce il pulsante per arrendersi
   handleSurrender() {
-  if (confirm("Sei sicuro di volerti arrendere? Vedrai tutto il testo in chiaro ma perderai la partita.")) {
-    this.restService.surrender(this.gameId).subscribe({
-      next: (response: any) => { 
-        this.toastr.warning("Ti sei arreso! Ecco il testo completo.", "Partita Terminata");
-        
-        this.gameData.status = response.status;
-        this.gameData.fullText = response.fullText;
-        this.gameData.correctTitle = response.correctTitle;
-        
-      },
-      error: (err) => {
-        this.toastr.error("Impossibile arrendersi, riprova.", "Errore");
-      }
+    if (confirm("Sei sicuro di volerti arrendere? Vedrai tutto il testo in chiaro ma perderai la partita.")) {
+      this.restService.surrender(this.gameId).subscribe({
+        next: (response: any) => { 
+          this.gameData.status = response.status;
+          this.gameData.fullText = response.fullText;
+          this.gameData.correctTitle = response.correctTitle;
+          
+        },
+        error: (err) => {
+          this.toastr.error("Impossibile arrendersi, riprova.", "Errore");
+        }
+      });
+    }
+  }
+
+  triggerConfetti() {
+    confetti({
+      particleCount: 500, // Numero di coriandoli
+      spread: 100,         // Quanto si allargano
+      origin: { y: 0.6 }, // Partono da sopra
+      colors: ['#7ed957', '#1abc9c', '#f1c40f', '#e74c3c', '#9b59b6'] 
     });
   }
-}
 }

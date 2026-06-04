@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import { Game, User } from '../models/Database';
+import jwt from 'jsonwebtoken';
 
 export class GameController {
   
@@ -243,6 +244,21 @@ export class GameController {
   }
 
   static async getLeaderboard(req: Request) {
+    let currentUsername: string | null = null;
+    const authHeader = req.headers.authorization;
+
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      try {
+        const secret = process.env.TOKEN_SECRET || 'segreto-di-riserva-locale';
+        // Verifichiamo e decodifichiamo il token in modo sincrono
+        const decoded = jwt.verify(token, secret) as any;
+        currentUsername = decoded.user; 
+      } catch (err) {
+        // Se il token è scaduto o invalido l'utente vedrà la classifica pubblica generica.
+      }
+    }
+    // RECUPERO DATI DAL DATABASE
     const wonGames: any = await Game.findAll({
       where: { status: 'WON' },
       include: [{ model: User, attributes: ['userName'] }]
@@ -251,8 +267,14 @@ export class GameController {
     const stats: Record<string, { wins: number, totalTime: number }> = {};
 
     wonGames.forEach((game: any) => {
-      const username = game.User.userName;
-      const timeTaken = game.endTime.getTime() - game.startTime.getTime();
+      const username = game.User?.userName;
+      if (!username || !game.startTime || !game.endTime) return; 
+
+      const start = new Date(game.startTime).getTime();
+      const end = new Date(game.endTime).getTime();
+      const timeTaken = end - start;
+
+      if (isNaN(timeTaken) || timeTaken < 0) return;
 
       if (!stats[username]) {
         stats[username] = { wins: 0, totalTime: 0 };
@@ -261,7 +283,8 @@ export class GameController {
       stats[username].totalTime += timeTaken;
     });
 
-    const leaderboard = Object.keys(stats).map(username => {
+    // 3. CALCOLO DELLA CLASSIFICA GLOBALE
+    const fullLeaderboard = Object.keys(stats).map(username => {
       return {
         username: username,
         wins: stats[username].wins,
@@ -269,11 +292,36 @@ export class GameController {
       };
     });
 
-    leaderboard.sort((a, b) => {
-      if (b.wins !== a.wins) return b.wins - a.wins; // Ordine decrescente per vittorie
-      return a.averageTimeMs - b.averageTimeMs;      // Ordine crescente per tempo
+    fullLeaderboard.sort((a, b) => {
+      if (b.wins !== a.wins) return b.wins - a.wins;
+      return a.averageTimeMs - b.averageTimeMs;      
     });
 
-    return leaderboard;
+    // 4. ASSEGNAZIONE DELLA POSIZIONE (RANK)
+    const rankedLeaderboard = fullLeaderboard.map((entry, index) => ({
+      ...entry,
+      rank: index + 1 // 1 per il primo, 2 per il secondo, ecc.
+    }));
+
+    // 5. TAGLIO ALLA TOP 10
+    const top10 = rankedLeaderboard.slice(0, 10);
+
+    // 6. RICERCA DEL GIOCATORE CORRENTE (Se loggato e non in Top 10)
+    let currentUserFallback = null;
+    
+    if (currentUsername) {
+      const userStats = rankedLeaderboard.find(u => u.username === currentUsername);
+      
+      // Salviamo il fallback SOLO se l'utente esiste e la sua posizione è oltre il 10
+      if (userStats && userStats.rank > 10) {
+        currentUserFallback = userStats;
+      }
+    }
+
+    // 7. RISPOSTA AL FRONTEND
+    return {
+      top10: top10,
+      currentUserFallback: currentUserFallback
+    };
   }
 }

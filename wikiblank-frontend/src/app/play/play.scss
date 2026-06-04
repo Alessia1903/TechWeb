@@ -1,297 +1,261 @@
-.wiki-text {
-  line-height: 1.8;
-  color: #333;
-  font-size: 1.1rem;
-  text-align: justify;
+/* Contenitore principale */
+.play-container {
+  max-width: 1200px; /* Allargato un po' per far respirare le due colonne */
+  margin: 0 auto;
+  padding: 2rem;
+}
 
-  /* Stile per i Titoli principali (==) */
-  h2 {
-    font-size: 1.6rem;
-    color: #000;
-    border-bottom: 1px solid #a2a9b1; /* La classica riga grigia di Wikipedia */
-    padding-bottom: 0.3em;
-    margin-top: 2em;
-    margin-bottom: 1em;
+/* --- NUOVO LAYOUT A DUE COLONNE --- */
+.game-layout {
+  display: grid;
+  /* 3fr = 3 parti (75%), 1fr = 1 parte (25%) */
+  grid-template-columns: 3fr 1fr; 
+  gap: 3rem; /* Spazio tra il testo e la colonna di destra */
+  align-items: start; /* Allinea gli elementi in alto */
+}
+
+/* COLONNA SINISTRA (Testo in corso) E TESTO RIVELATO (Fine partita) */
+.left-column, .wiki-content-box {
+  background-color: #ffffff;
+  padding: 2.5rem; 
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); 
+  border: 1px solid #eaeaea;
+
+  /* Stile interno (Titolo e Testo) */
+  .wiki-title {
+    font-size: 2.2rem;
+    color: #2c3e50;
+    margin-top: 0; /* Assicura che sia allineato bene in alto */
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 1.5rem;
+    
+    /* Colore speciale quando si vince */
+    &.correct {
+      color: #1abc9c;
+    }
   }
 
-  /* Stile per i Sottotitoli (===) */
-  h3 {
-    font-size: 1.3rem;
-    color: #222;
-    margin-top: 1.5em;
-    margin-bottom: 0.8em;
-  }
-
-  /* Stile per i paragrafi */
-  p {
-    margin-bottom: 1.2em;
-  }
-
-  /* Stile per le liste */
-  .wiki-list-item {
-    margin-left: 20px;
-    margin-bottom: 0.5em;
+  .wiki-text {
+    line-height: 1.8;
+    font-size: 1.15rem; /* Leggermente ingrandito per una lettura ottimale */
+    color: #333;
   }
 }
 
-// Variabili colore (puoi personalizzarle)
-$primary-color: #007bff;
-$primary-hover: #0056b3;
-$danger-color: #dc3545;
-$danger-hover: #c82333;
-$success-color: #28a745;
-$background-light: #f8f9fa;
-$border-color: #dee2e6;
-$text-main: #333;
-$text-muted: #6c757d;
+/* Margine extra solo per il box di fine partita per staccarlo dalla game-over-card */
+.wiki-content-box {
+  margin-top: 2rem;
+}
 
-.play-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  font-family: sans-serif;
-  color: $text-main;
+/* COLONNA DESTRA (Strumenti di gioco) */
+.right-column {
+  background-color: #ffffff; 
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); 
+  border: 1px solid #e1e8ed;
+  
+  /* Rende la colonna "appiccicosa": ti segue mentre scorri il testo a sinistra! */
+  position: sticky;
+  top: 100px; /* Distanza dalla navbar in alto */
 
-  .loading {
-    text-align: center;
-    font-size: 1.2rem;
-    color: $text-muted;
-    margin-top: 3rem;
-  }
-
-  // HEADER DELLA PARTITA
-  .game-header {
+  /* Riga 1: Tentativi e Arresa */
+  .game-stats-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: $background-light;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    border: 1px solid $border-color;
-
-    h2 {
-      margin: 0;
-      font-size: 1.4rem;
-    }
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #dee2e6;
 
     p {
-      margin: 0;
       font-size: 1.1rem;
+      color: #4a5568;
+      margin: 0;
     }
 
     .btn-surrender {
-      background-color: $danger-color;
+      background-color: #e74c3c;
       color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 4px;
+      border: 1px solid #fadbd8;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
       cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.2s;
+      transition: all 0.2s;
 
       &:hover {
-        background-color: $danger-hover;
+        background-color: #cc3d2d;
+        color: white;
       }
     }
   }
 
-  // TITOLO WIKIPEDIA
-  .wiki-title {
-    font-size: 2.5rem;
-    border-bottom: 1px solid #a2a9b1;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
-    font-family: 'Georgia', serif; // I titoli di Wikipedia spesso hanno un tocco graziato
-
-    &.correct {
-      color: $success-color;
-    }
-  }
-
-  // FORM DI TENTATIVO
+  /* Riga 2: Input per indovinare */
   .guess-form {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 0.8rem;
     margin-bottom: 2rem;
-    background: white;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 
     input {
-      flex: 1;
-      padding: 12px 16px;
+      padding: 1rem;
       font-size: 1.1rem;
-      border: 2px solid $border-color;
-      border-radius: 6px;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
       outline: none;
       transition: border-color 0.2s;
 
       &:focus {
-        border-color: $primary-color;
+        border-color: #7ed957;
       }
     }
 
     button {
-      padding: 0 24px;
+      padding: 1rem;
       font-size: 1.1rem;
       font-weight: bold;
-      background-color: $primary-color;
+      background-color: #7ed957;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.2s;
 
       &:hover:not(:disabled) {
-        background-color: $primary-hover;
+        background-color: #6bc248;
       }
 
       &:disabled {
-        background-color: #a0c4ff;
+        background-color: #cbd5e1;
         cursor: not-allowed;
       }
     }
   }
 
-  // PAROLE INDOVINATE (BADGES)
+  /* Riga 3: Parole Indovinate */
   .guessed-words-section {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px dashed $border-color;
-
     h3 {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
+      color: #2c3e50;
       margin-bottom: 1rem;
-      color: #555;
     }
 
     .words-badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 0.5rem;
+      
+      /* Se l'utente indovina 100 parole, la colonna non si allunga all'infinito */
+      max-height: 400px;
+      overflow-y: auto; 
 
-      p {
-        color: $text-muted;
+      .word-badge {
+        background-color: #e8f8f5;
+        color: #11a88a;
+        border: 1px solid #a3e4d7;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .empty-state {
+        color: #7f8c8d;
+        font-size: 0.95rem;
         font-style: italic;
       }
     }
-
-    .word-badge {
-      background-color: #e2e8f0;
-      color: #1a202c;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 0.95rem;
-      font-weight: 500;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
   }
+}
 
-  // SCHEDA PARTITA CONCLUSA (GAME OVER)
-  .game-over-card {
-    text-align: center;
-    background-color: #fff3cd; // Giallo tenue per la resa
-    border: 2px solid #ffeeba;
-    padding: 2rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
+/* --- CARD DI FINE PARTITA --- */
+.game-over-card {
+  /* Stile di default: Resa / Sconfitta */
+  background-color: #fdf2f2; 
+  border: 4px solid #fadbd8;
+  border-radius: 16px;
+  padding: 2.5rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 3rem auto; /* Centrata con un po' di margine in basso */
+  box-shadow: 0 10px 30px rgba(231, 76, 60, 0.1);
+  transition: all 0.3s ease;
 
-    &.completed {
-      background-color: #d4edda; // Verde per la vittoria
-      border-color: #c3e6cb;
-      color: #155724;
-    }
+  /* STILE VITTORIA: si attiva in automatico se c'è la classe .completed */
+  &.completed {
+    background-color: #ffffff; /* Sfondino verde chiaro */
+    border-color: #aae094; /* Bordo verdino */
+    box-shadow: 0 10px 30px rgba(126, 217, 87, 0.15); 
 
     h2 {
-      margin-top: 0;
-      font-size: 1.8rem;
-    }
-
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .btn-back {
-      background-color: $text-main;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-      transition: background-color 0.2s;
-
-      &:hover {
-        background-color: #000;
-      }
+      color: #5ba83e; /* Verde scuro per il testo della vittoria */
     }
   }
-}
 
-// Media Query per schermi piccoli (Cellulari)
-@media (max-width: 600px) {
-  .play-container {
-    .game-header {
-      flex-direction: column;
-      gap: 15px;
-      text-align: center;
-      
-      .btn-surrender {
-        width: 100%;
-      }
+  /* Bottone per tornare indietro */
+  .btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #3498db;
+    color: white;
+    border: 2px solid #3498db;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 2rem; /* Lo stacca dal titolo sottostante */
+
+    &:hover {
+      background-color: #2980b9;
+      box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
     }
 
-    .guess-form {
-      flex-direction: column;
-      
-      button {
-        padding: 12px;
-      }
+    &:active {
+      transform: translateY(0);
+      box-shadow: none;
     }
   }
-}
 
-.wiki-text {
-  line-height: 1.8;
-  color: #222;
-  font-size: 1.1rem;
-  text-align: justify;
+  /* Testi della card */
+  h2 {
+    font-size: 2.2rem;
+    color: #e74c3c; /* Rosso di default per la resa */
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
 
   p {
-    margin-bottom: 1.5rem;
-    display: block;
-  }
+    font-size: 1.15rem;
+    color: #4a5568;
+    margin: 0;
 
-  h2 {
-    font-size: 1.6rem;
-    color: #000;
-    border-bottom: 1px solid #a2a9b1;
-    padding-bottom: 0.3em;
-    margin-top: 2em;
-    margin-bottom: 1em;
-    font-family: 'Georgia', serif;
-  }
-
-  /* Forza lo stile sulle liste iniettate dalla Pipe */
-  ::ng-deep ul.wiki-list {
-    display: block !important;
-    list-style-type: disc !important;
-    list-style-position: inside !important; // Mantiene il pallino visibile dentro il testo
-    padding-left: 1.5rem !important;
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-
-    li {
-      display: list-item !important;
-      margin-bottom: 0.8rem; // Più spazio tra un personaggio/link e l'altro
-      line-height: 1.6;
-      color: #222;
-      text-align: left;
+    strong {
+      font-size: 1.3rem;
+      color: #2c3e50;
+      padding: 0 0.2rem;
     }
+  }
+}
+
+/* --- RESPONSIVITÀ PER SMARTPHONE E TABLET --- */
+@media (max-width: 900px) {
+  .game-layout {
+    /* Su schermi piccoli, le colonne si impilano una sull'altra */
+    grid-template-columns: 1fr; 
+    gap: 2rem;
+  }
+
+  .right-column {
+    /* Manda la colonna degli strumenti IN CIMA rispetto al testo */
+    order: -1; 
+    position: static; /* Disabilita lo sticky su mobile */
   }
 }

@@ -46,8 +46,6 @@ export class GamesComponent implements OnInit {
   startNewGame() {
     this.restService.startGame().subscribe({
       next: (newGame) => {
-        this.toastr.success("Partita creata! In bocca al lupo.", "Nuova Sfida");
-        // Andiamo alla pagina della singola partita (che creeremo al prossimo step)
         this.router.navigate(['/play', newGame.gameId]); 
       },
       error: (err) => {
@@ -83,21 +81,35 @@ export class GamesComponent implements OnInit {
 
   // calcolo del tempo
   formatDuration(startTime: string | Date, endTime: string | Date | null | undefined): string {
-    if (!endTime) return 'In corso...'; // Se la partita non è finita, non c'è una fine
+    if (!endTime) return 'In corso...';
 
     const start = new Date(startTime).getTime();
     const end = new Date(endTime).getTime();
+
+    // 1. CONTROLLO ERRORI: Se una delle due date non è valida (NaN), esci in modo pulito
+    if (isNaN(start) || isNaN(end)) return '---';
+
     const diffMs = end - start;
 
     if (diffMs < 0) return '---';
 
-    const minutes = Math.floor(diffMs / 60000);
-    const seconds = Math.floor((diffMs % 60000) / 1000);
+    // 2. CALCOLO CON LE ORE INCLUSE
+    const hours = Math.floor(diffMs / (1000 * 60 * 60));
+    const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
-    if (minutes > 0) {
-      return `${minutes} min ${seconds} sec`;
-    } else {
-      return `${seconds} sec`;
+    // 3. COSTRUZIONE STRINGA DINAMICA (più pulita)
+    let timeString = '';
+    
+    if (hours > 0) {
+      timeString += `${hours}h `;
     }
+    if (minutes > 0 || hours > 0) { // Mostra i minuti se ci sono ore, anche se sono 0 (es. 1h 0m)
+      timeString += `${minutes}m `;
+    }
+    
+    timeString += `${seconds}s`;
+
+    return timeString.trim();
   }
 }

@@ -2,4 +2,21 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-image: url('/assets/sfondo.png');
+  
+  /* 2. Impedisce all'immagine di ripetersi a mosaico */
+  background-repeat: no-repeat;
+  
+  /* 3. Centra l'immagine nello schermo */
+  background-position: left top;
+  
+  /* 4. Scala l'immagine in modo proporzionale per coprire l'intero schermo senza lasciare buchi bianchi */
+  background-size: cover;
+  
+  /* 5. LA MAGIA: fissa lo sfondo. Il testo scorre, lo sfondo resta fermo! */
+  background-attachment: fixed;
+  
+  /* Opzionale: un colore di base che appare prima che l'immagine finisca di caricarsi */
+  background-color: #ffe4f5;
 }

@@ -1,0 +1,150 @@
+.signup-container {
+  /* Struttura identica al Login per coerenza visiva */
+  max-width: 420px;
+  margin: 10vh auto 3rem auto;
+  padding: 2.5rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #eaeaea;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+
+  h2 {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 0.95rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        font-size: 1rem;
+        color: #333;
+        background-color: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        box-sizing: border-box;
+        transition: all 0.2s ease;
+
+        &::placeholder {
+          color: #94a3b8;
+          font-size: 0.95rem;
+        }
+
+        /* Effetto di selezione normale (Verde) */
+        &:focus {
+          outline: none;
+          background-color: #ffffff;
+          border-color: #7ed957; 
+          box-shadow: 0 0 0 3px rgba(126, 217, 87, 0.2);
+        }
+
+        /* STATO DI ERRORE: Usiamo la "&" per agganciarci all'input stesso */
+        &.ng-invalid.ng-touched {
+          border-color: #e74c3c; 
+          background-color: #fdf2f2;
+          
+          &:focus {
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+          }
+        }
+      } /* <--- FINE INPUT: chiudiamo la parentesi dell'input qui! */
+
+      /* Il messaggio di errore è un "fratello" dell'input, quindi va fuori */
+      .error-message {
+        display: block;
+        color: #e74c3c;
+        font-size: 0.85rem;
+        margin-top: 0.4rem;
+        font-weight: 600;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+    }
+
+    button[type="submit"] {
+      margin-top: 0.5rem;
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      background-color: #7ed957; 
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(126, 217, 87, 0.3);
+
+      &:hover:not(:disabled) {
+        background-color: #6bc248; 
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(126, 217, 87, 0.4);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 2px 5px rgba(126, 217, 87, 0.3);
+      }
+
+      &:disabled {
+        background-color: #e2e8f0;
+        color: #94a3b8;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+    }
+  }
+
+  /* Link per tornare al Login */
+  p {
+    color: #64748b;
+    font-size: 0.95rem;
+
+    a {
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+/* Animazione di comparsa morbida per l'errore */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- ADATTAMENTO MOBILE --- */
+@media (max-width: 480px) {
+  .signup-container {
+    margin: 5vh 1rem;
+    padding: 2rem 1.5rem;
+    
+    h2 {
+      font-size: 1.7rem;
+    }
+  }
+}

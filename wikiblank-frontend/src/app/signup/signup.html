@@ -5,12 +5,26 @@
     
     <div class="form-group">
       <label for="usr">Scegli uno Username</label>
-      <input id="usr" type="text" formControlName="usr" placeholder="Es. nuovo_giocatore">
+      <input id="usr" type="text" formControlName="usr" placeholder="Username">
+      @if (signupForm.get('usr')?.invalid && signupForm.get('usr')?.touched) {
+        <small class="error-message">Lo username è obbligatorio.</small>
+      }
     </div>
 
     <div class="form-group">
       <label for="pwd">Crea una Password</label>
-      <input id="pwd" type="password" formControlName="pwd" placeholder="Tra 4 e 16 caratteri">
+      <input id="pwd" type="password" formControlName="pwd" placeholder="Password">
+      @if (signupForm.get('pwd')?.invalid && signupForm.get('pwd')?.touched) {
+        <small class="error-message">
+          @if (signupForm.get('pwd')?.errors?.['required']) {
+            La password è obbligatoria.
+          } @else if (signupForm.get('pwd')?.errors?.['minlength']) {
+            La password deve essere di almeno 4 caratteri.
+          } @else if (signupForm.get('pwd')?.errors?.['maxlength']) {
+            La password non può superare i 16 caratteri.
+          }
+        </small>
+      }
     </div>
 
     <button type="submit" [disabled]="signupForm.invalid">Crea Account</button>

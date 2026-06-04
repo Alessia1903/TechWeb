@@ -1,6 +1,6 @@
 <div class="games-dashboard-container">
   <header>
-    <h2>Le Mie Partite 🎮</h2>
+    <h2>Le Mie Partite</h2>
     <p>Gestisci le tue sfide e analizza i tuoi tempi.</p>
   </header>
 
@@ -21,7 +21,7 @@
         <div class="new-game-card">
           <h3>Sei pronto per una nuova sfida?</h3>
           <button class="btn-start" (click)="startNewGame()">
-            ➕ Inizia Nuova Partita
+            Inizia Nuova Partita
           </button>
         </div>
       }
@@ -47,7 +47,6 @@
             @for (game of paginatedGames; track game.id) {
               <tr>
                 <td><strong>{{ game.articleTitle }}</strong></td>
-                <td>{{ formatDuration(game.startTime, game.endTime) }}</td>
                 
                 <td>
                   @if (game.status === 'IN_PROGRESS') {
@@ -58,7 +57,7 @@
                     <span class="badge danger">Arresa 🏳️</span>
                   }
                 </td>
-                
+                <td>{{ formatDuration(game.startTime, game.endTime) }}</td>
                 <td>{{ game.attemptsCount || 0 }}</td>
               </tr>
             }

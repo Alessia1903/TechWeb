@@ -1,0 +1,126 @@
+.login-container {
+  /* Centratura e dimensioni della card */
+  max-width: 420px;
+  margin: 10vh auto 3rem auto; /* 10vh lo spinge un po' in basso rispetto alla navbar */
+  padding: 2.5rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #eaeaea;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+
+  h2 {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 0.95rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        font-size: 1rem;
+        color: #333;
+        background-color: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        box-sizing: border-box;
+        transition: all 0.2s ease;
+
+        &::placeholder {
+          color: #94a3b8;
+        }
+
+        /* Effetto quando l'utente clicca sull'input */
+        &:focus {
+          outline: none;
+          background-color: #ffffff;
+          border-color: #7ed957; /* Richiama il verde della tua navbar */
+          box-shadow: 0 0 0 3px rgba(126, 217, 87, 0.2); /* Alone verde morbido */
+        }
+      }
+    }
+
+    button[type="submit"] {
+      margin-top: 0.5rem;
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      background-color: #7ed957; /* Verde Navbar */
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(126, 217, 87, 0.3);
+
+      /* Animazione al passaggio del mouse */
+      &:hover:not(:disabled) {
+        background-color: #6bc248; /* Verde leggermente più scuro */
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(126, 217, 87, 0.4);
+      }
+
+      /* Animazione al click */
+      &:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 2px 5px rgba(126, 217, 87, 0.3);
+      }
+
+      /* Stile quando il form non è valido (es. campi vuoti) */
+      &:disabled {
+        background-color: #e2e8f0;
+        color: #94a3b8;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+    }
+  }
+
+  /* Stile per il link in basso */
+  p {
+    color: #64748b;
+    font-size: 0.95rem;
+
+    a {
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+/* --- ADATTAMENTO PER SCHERMI PICCOLI (MOBILE) --- */
+@media (max-width: 480px) {
+  .login-container {
+    margin: 5vh 1rem; /* Margini laterali al posto del centering rigido */
+    padding: 2rem 1.5rem;
+    
+    h2 {
+      font-size: 1.7rem;
+    }
+  }
+}
