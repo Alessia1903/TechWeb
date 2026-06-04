@@ -5,14 +5,20 @@
   font-family: sans-serif;
 
   .btn-back {
-    background: none;
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: white;
     border: none;
-    color: #007bff;
-    font-size: 1rem;
+    border-radius: 4px;
     cursor: pointer;
-    margin-bottom: 1.5rem;
-    padding: 0;
-    &:hover { text-decoration: underline; }
+    transition: background-color 0.2s;
+    font-size: 1.2rem;
+
+    display: inline-flex;
+    align-self: flex-start;
+    margin: 0 0 2rem auto;
+    
+    &:hover { background-color: #0056b3; }
   }
 
   .loading {

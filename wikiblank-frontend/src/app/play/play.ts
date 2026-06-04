@@ -70,11 +70,6 @@ export class PlayComponent implements OnInit {
           this.triggerConfetti();
         }
 
-        // 2. Opzionale ma carino: se ha indovinato una parola normale, mostriamo un piccolo toast verde
-        if (response.correct && !response.victory) {
-          this.toastr.success("Parola trovata!", "Ottimo");
-        }
-
         // 3. Ricarichiamo la partita per vedere il testo aggiornato e la nuova parola nella lista
         this.loadGame(); 
       },

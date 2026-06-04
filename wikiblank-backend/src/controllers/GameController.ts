@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import { Game, User } from '../models/Database';
 import jwt from 'jsonwebtoken';
+import { Op } from 'sequelize';
 
 export class GameController {
   
@@ -204,22 +205,37 @@ export class GameController {
   }
 
   static async getCompletedGames(req: Request) {
+    // 1. Calcoliamo l'inizio e la fine della giornata odierna
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+
     const games: any = await Game.findAll({
       where: {
-        status: ['WON', 'SURRENDERED'] 
+        status: ['WON', 'SURRENDERED'],
+        endTime: {
+          [Op.between]: [startOfToday, endOfToday] // PRENDE SOLO LE PARTITE DI OGGI!
+        }
       },
       include: [{ model: User, attributes: ['userName'] }], 
-      order: [['endTime', 'DESC']] // dalle più recenti
+      order: [['endTime', 'DESC']] // Dalle più recenti
     });
 
-    return games.map((g: any) => ({
-      id: g.id,
-      player: g.User ? g.User.userName : 'Anonimo',
-      status: g.status,
-      attemptsCount: g.attemptsCount,
-      timeTakenMs: g.endTime.getTime() - g.startTime.getTime(),
-      endTime: g.endTime
-    }));
+    return games.map((g: any) => {
+      const start = g.startTime ? new Date(g.startTime).getTime() : 0;
+      const end = g.endTime ? new Date(g.endTime).getTime() : 0;
+      
+      return {
+        id: g.id,
+        player: g.User?.userName || 'Anonimo',
+        status: g.status,
+        attemptsCount: g.attemptsCount,
+        timeTakenMs: (end > 0 && start > 0) ? end - start : 0,
+        endTime: g.endTime
+      };
+    });
   }
 
   static async getCompletedGameDetails(req: Request) {

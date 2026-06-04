@@ -41,18 +41,35 @@ export class ArchiveDetailComponent implements OnInit {
     });
   }
 
-  // Riutilizziamo le funzioni di formattazione
-  formatTime(ms: number): string {
-    if (!ms) return "0m 0s";
-    const totalSeconds = Math.floor(ms / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes}m ${seconds}s`;
+  formatTime(ms: number | null | undefined): string {
+    // 1. Controllo base: se non c'è un tempo valido o è negativo
+    if (ms === null || ms === undefined || isNaN(ms) || ms < 0) {
+      return '---';
+    }
+
+    // 2. CALCOLO CON LE ORE INCLUSE
+    const hours = Math.floor(ms / (1000 * 60 * 60));
+    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+
+    // 3. COSTRUZIONE STRINGA DINAMICA
+    let timeString = '';
+    
+    if (hours > 0) {
+      timeString += `${hours}h `;
+    }
+    if (minutes > 0 || hours > 0) { // Mostra i minuti se ci sono ore, anche se sono 0 (es. 1h 0m)
+      timeString += `${minutes}m `;
+    }
+    
+    timeString += `${seconds}s`;
+
+    return timeString.trim() || '0s'; // Aggiunto un fallback se il tempo è esattamente 0 millisecondi
   }
 
   translateStatus(status: string): string {
-    if (status === 'WON') return 'Vittoria 🏆';
-    if (status === 'SURRENDERED') return 'Resa 🏳️';
+    if (status === 'WON') return 'Vittoria!';
+    if (status === 'SURRENDERED') return 'Resa';
     return status;
   }
 }

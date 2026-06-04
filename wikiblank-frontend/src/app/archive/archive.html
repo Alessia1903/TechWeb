@@ -1,8 +1,7 @@
 <div class="archive-container">
   
   <div class="header">
-    <h1>📚 Archivio Partite</h1>
-    <p>Esplora lo storico delle sfide concluse dalla community di WikiBlank.</p>
+    <h1>Archivio delle Partite</h1>
   </div>
 
   @if (isLoading) {
@@ -23,7 +22,6 @@
       <table class="archive-table">
         <thead>
           <tr>
-            <th>Partita #</th>
             <th>Giocatore</th>
             <th>Esito</th>
             <th>Tentativi</th>
@@ -35,8 +33,9 @@
         
         <tbody>
           @for (game of archivedGames; track game.id) {
-            <tr>
-              <td>{{ game.id }}</td>
+            <tr 
+            [class.won-row]="game.status === 'WON'"
+            [class.lost-row]="game.status === 'SURRENDERED'">
               <td><strong>{{ game.player }}</strong></td>
               <td>{{ translateStatus(game.status) }}</td>
               <td>{{ game.attemptsCount }}</td>
@@ -45,7 +44,7 @@
               
               <td>
                 <button [routerLink]="['/archive', game.id]" class="btn-details">
-                  🔍 Vedi Dettagli
+                  Vedi Dettagli
                 </button>
               </td>
             </tr>
@@ -54,5 +53,14 @@
       </table>
     </div>
   }
+
+  <div class="archive-promo-section">
+  <h3>Vuoi scoprire chi sono i campioni assoluti?</h3>
+  <p>Dai un'occhiata ai giocatori più accaniti.</p>
+  
+  <button routerLink="/homepage" class="btn-archive">
+    Torna alla Classifica Globale
+  </button>
+</div>
 
 </div>

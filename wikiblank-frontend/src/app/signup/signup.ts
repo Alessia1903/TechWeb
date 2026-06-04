@@ -37,15 +37,13 @@ export class SignupComponent {
     } 
 
     this.restService.signup({
-      userName: this.signupForm.value.usr as string,
-      password: this.signupForm.value.pwd as string,
+      usr: this.signupForm.value.usr as string,
+      pwd: this.signupForm.value.pwd as string,
     }).subscribe({
       error: (err) => {
-        // Se il backend restituisce errore (es. status 400), probabilmente l'utente esiste già
         this.toastr.error("Questo username è già stato preso. Scegline un altro!", "Registrazione fallita");
       },
       complete: () => {
-        // Quando la registrazione termina con successo, andiamo al login
         this.toastr.success(`Ora puoi accedere con il tuo account`, `Benvenuto ${this.signupForm.value.usr}!`);
         this.router.navigateByUrl("/login");
       }

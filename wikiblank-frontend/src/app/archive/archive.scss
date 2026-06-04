@@ -8,8 +8,13 @@
     text-align: center;
     margin-bottom: 2rem;
     
-    h1 { margin-bottom: 0.5rem; color: #333; }
-    p { color: #666; font-size: 1.1rem; }
+    h1 {
+      font-size: 2.4rem;
+      color: #1e2b37;
+      margin-bottom: 0.6rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
   }
 
   .loading-state, .empty-state {
@@ -45,7 +50,23 @@
       font-weight: bold;
     }
 
-    tr:hover { background-color: #fafafa; }
+    tr {
+      transition: background-color 0.2s ease;
+      
+      &.won-row {
+        td:nth-child(2) {
+          color: #31980c; 
+          font-weight: 600;
+        }
+      }
+
+      &.lost-row {
+        td:nth-child(2) {
+          color: #e74c3c;
+          font-weight: 600;
+        }
+      }
+    }
 
     .btn-details {
       padding: 6px 12px;
@@ -69,5 +90,54 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 1rem;
+  }
+
+  /* SEZIONE PROMOZIONALE CLASSIFICA (CALL TO ACTION) */
+  .archive-promo-section {
+    background: linear-gradient(135deg, #fdfbf7 0%, #f5f7fa 100%);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    margin-top: 2rem;
+
+    h3 {
+      font-size: 1.35rem;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    p {
+      color: #64748b;
+      margin-bottom: 1.8rem;
+      font-size: 1.05rem;
+    }
+
+    /* BOTTONE CLASSIFICA */
+    .btn-archive {
+      display: inline-block;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      background-color: #3498db;
+      padding: 0.9rem 2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(52, 152, 219, 0.35);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
   }
 }
