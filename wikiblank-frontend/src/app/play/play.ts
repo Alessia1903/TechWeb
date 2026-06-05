@@ -26,7 +26,7 @@ export class PlayComponent implements OnInit {
 
   // Form per inviare la parola da indovinare
   guessForm = new FormGroup({
-    word: new FormControl('', [Validators.required, Validators.minLength(1)])
+    word: new FormControl('', [Validators.required, Validators.minLength(1), Validators.pattern(/^\S+$/)])
   });
 
   ngOnInit() {
@@ -57,8 +57,8 @@ export class PlayComponent implements OnInit {
 
   handleGuess() {
     if (this.guessForm.invalid) return;
-    const guessedWord = this.guessForm.value.word as string;
-
+    const rawWord = this.guessForm.value.word as string;
+    const guessedWord = rawWord.trim().split(' ')[0];
     // Chiamiamo l'API del backend per verificare la parola
     this.restService.guessWord(this.gameId, guessedWord).subscribe({
       next: (response: any) => {

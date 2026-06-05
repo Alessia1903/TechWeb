@@ -41,6 +41,8 @@
     line-height: 1.8;
     font-size: 1.15rem; /* Leggermente ingrandito per una lettura ottimale */
     color: #333;
+    min-width: 0;
+    overflow-wrap: break-word;
   }
 }
 
@@ -57,10 +59,6 @@
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); 
   border: 1px solid #e1e8ed;
   
-  /* Rende la colonna "appiccicosa": ti segue mentre scorri il testo a sinistra! */
-  position: sticky;
-  top: 100px; /* Distanza dalla navbar in alto */
-
   /* Riga 1: Tentativi e Arresa */
   .game-stats-header {
     display: flex;
@@ -248,14 +246,11 @@
 /* --- RESPONSIVITÀ PER SMARTPHONE E TABLET --- */
 @media (max-width: 900px) {
   .game-layout {
-    /* Su schermi piccoli, le colonne si impilano una sull'altra */
     grid-template-columns: 1fr; 
     gap: 2rem;
   }
 
   .right-column {
-    /* Manda la colonna degli strumenti IN CIMA rispetto al testo */
     order: -1; 
-    position: static; /* Disabilita lo sticky su mobile */
   }
 }

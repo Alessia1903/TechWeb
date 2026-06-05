@@ -28,7 +28,6 @@ export class HomepageComponent implements OnInit {
   fetchLeaderboard() {
     this.restService.getLeaderboard().subscribe({
       next: (data: any) => {
-        console.log("Dati grezzi dal backend:", data);
         this.leaderboard = data.top10; // Assegniamo solo l'array dei primi 10
         this.currentUserFallback = data.currentUserFallback; // Salviamo il ripescaggio
         

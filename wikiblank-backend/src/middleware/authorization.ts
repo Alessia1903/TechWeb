@@ -1,10 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthController } from '../controllers/AuthController';
 
-/**
- * This middleware ensures that the user is currently authenticated. If not,
- * redirects to login with an error message.
- */
+// Middleware per l'autenticazione: verifica che il token sia presente e valido
 export function enforceAuthentication(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers['authorization'];
   const token = authHeader?.split(' ')[1];
@@ -22,9 +19,7 @@ export function enforceAuthentication(req: Request, res: Response, next: NextFun
   });
 }
 
-/**
- * Assicuriamoci che l'utente modifichi solo i propri Giochi
- */
+// Middleware per autorizzazione: verifica che l'utente possa modificare solo i propri giochi
 export async function ensureUsersModifyOnlyOwnGames(req: Request, res: Response, next: NextFunction) {
   const user = (req as any).username;
   const gameId = req.params.id; 

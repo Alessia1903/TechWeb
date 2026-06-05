@@ -4,65 +4,18 @@ import jwt from 'jsonwebtoken';
 import { Op } from 'sequelize';
 
 export class GameController {
-  
-  static async getGamesForCurrentUser(req: Request) {
-    const username = (req as any).username;
-    const user = await User.findOne({ 
-      where: { userName: username } 
-    });
-    if (!user) {
-      return [];
-    }
-    const games: any = await Game.findAll({
-      where: { userId: (user as any).id },
-      order: [['createdAt', 'DESC']],
-      attributes: { exclude: ['originalText'] }
-    });
-    return games.map((game: any) => {
-    const gameData = game.toJSON();
-
-    if (gameData.status === 'IN_PROGRESS') {
-      const guessed = gameData.guessedWords || [];
-      gameData.articleTitle = this.obscureText(gameData.articleTitle, guessed);
-    }
-
-    return gameData;
-  });
-  }
-
-  static async findById(req: Request) {
-    const game: any = await Game.findByPk(req.params.id as string);
-    if (!game) return null;
-    const guessedWords: string[] = game.guessedWords || [];
-
-    if (game.status === 'IN_PROGRESS') {
-      return {
-        id: game.id,
-        status: game.status,
-        attemptsCount: game.attemptsCount,
-        guessedWords: guessedWords,
-        obscuredTitle: this.obscureText(game.articleTitle, guessedWords),
-        obscuredText: this.obscureText(game.originalText, guessedWords)
-      };
-    } 
-    return {
-      id: game.id,
-      status: game.status,
-      attemptsCount: game.attemptsCount,
-      guessedWords: guessedWords,
-      correctTitle: game.articleTitle,
-      fullText: game.originalText
-    };
-  }
-
+  // ==========================================
+  // FUNZIONI DI SUPPORTO
+  // ==========================================
+  // Chiamata a MediaWiki API
   private static async fetchRandomWikipediaArticle(): Promise<{ title: string, text: string }> {
     const articlePool = [
       "Biancaneve e i sette nani (film 1937)",
       "Pinocchio (film 1940)",
       "Cenerentola (film 1950)",
-      "Alice nel Paese delle Meraviglie",
+      "Alice nel Paese delle Meraviglie (film 1951)",
       "Le avventure di Peter Pan",
-      "La bella addormentata nel bosco",
+      "La bella addormentata nel bosco (film)",
       "La carica dei cento e uno",
       "Il libro della giungla (film 1967)",
       "Gli Aristogatti",
@@ -103,6 +56,7 @@ export class GameController {
     };
   }
 
+  // Oscura dinamicamente il testo
   private static obscureText(text: string, guessedWords: string[] = []): string {
     return text.replace(/[a-zA-Z0-9À-ÿ]+/g, (match) => {
       // Se la parola è nell'array delle indovinate, la mostriamo!
@@ -114,6 +68,36 @@ export class GameController {
     });
   }
 
+  // ==========================================
+  // GAME ROUTER METHODS
+  // ==========================================
+  // Partite personali
+  static async getGamesForCurrentUser(req: Request) {
+    const username = (req as any).username;
+    const user = await User.findOne({ 
+      where: { userName: username } 
+    });
+    if (!user) {
+      return [];
+    }
+    const games: any = await Game.findAll({
+      where: { userId: (user as any).id },
+      order: [['createdAt', 'DESC']],
+      attributes: { exclude: ['originalText'] }
+    });
+    return games.map((game: any) => {
+      const gameData = game.toJSON();
+
+      if (gameData.status === 'IN_PROGRESS') {
+        const guessed = gameData.guessedWords || [];
+        gameData.articleTitle = this.obscureText(gameData.articleTitle, guessed);
+      }
+
+      return gameData;
+    });
+  }
+
+  // Inizia nuova partita
   static async startNewGame(req: Request) {
     const article = await this.fetchRandomWikipediaArticle();
     const obscuredText = this.obscureText(article.text);
@@ -136,6 +120,33 @@ export class GameController {
     };
   }
 
+  // Recupera info partita
+  static async findById(req: Request) {
+    const game: any = await Game.findByPk(req.params.id as string);
+    if (!game) return null;
+    const guessedWords: string[] = game.guessedWords || [];
+
+    if (game.status === 'IN_PROGRESS') {
+      return {
+        id: game.id,
+        status: game.status,
+        attemptsCount: game.attemptsCount,
+        guessedWords: guessedWords,
+        obscuredTitle: this.obscureText(game.articleTitle, guessedWords),
+        obscuredText: this.obscureText(game.originalText, guessedWords)
+      };
+    } 
+    return {
+      id: game.id,
+      status: game.status,
+      attemptsCount: game.attemptsCount,
+      guessedWords: guessedWords,
+      correctTitle: game.articleTitle,
+      fullText: game.originalText
+    };
+  }
+
+  // Tentativo parola
   static async guessWord(req: Request) {
     const gameId = req.params.id as string;
     const game: any = await Game.findByPk(gameId);
@@ -182,6 +193,7 @@ export class GameController {
     };
   }
 
+  // Resa
   static async surrender(req: Request) {
     const gameId = req.params.id as string;
     const game: any = await Game.findByPk(gameId);
@@ -204,61 +216,10 @@ export class GameController {
     };
   }
 
-  static async getCompletedGames(req: Request) {
-    // 1. Calcoliamo l'inizio e la fine della giornata odierna
-    const startOfToday = new Date();
-    startOfToday.setHours(0, 0, 0, 0);
-
-    const endOfToday = new Date();
-    endOfToday.setHours(23, 59, 59, 999);
-
-    const games: any = await Game.findAll({
-      where: {
-        status: ['WON', 'SURRENDERED'],
-        endTime: {
-          [Op.between]: [startOfToday, endOfToday] // PRENDE SOLO LE PARTITE DI OGGI!
-        }
-      },
-      include: [{ model: User, attributes: ['userName'] }], 
-      order: [['endTime', 'DESC']] // Dalle più recenti
-    });
-
-    return games.map((g: any) => {
-      const start = g.startTime ? new Date(g.startTime).getTime() : 0;
-      const end = g.endTime ? new Date(g.endTime).getTime() : 0;
-      
-      return {
-        id: g.id,
-        player: g.User?.userName || 'Anonimo',
-        status: g.status,
-        attemptsCount: g.attemptsCount,
-        timeTakenMs: (end > 0 && start > 0) ? end - start : 0,
-        endTime: g.endTime
-      };
-    });
-  }
-
-  static async getCompletedGameDetails(req: Request) {
-    const gameId = req.params.id as string;
-    const game: any = await Game.findByPk(gameId, {
-      include: [{ model: User, attributes: ['userName'] }]
-    });
-    if (!game || game.status === 'IN_PROGRESS') {
-      throw new Error("Partita non trovata o non ancora conclusa");
-    }
-
-    const guessedWords: string[] = game.guessedWords || [];
-    return {
-      id: game.id,
-      player: game.User ? game.User.userName : 'Anonimo',
-      status: game.status,
-      attemptsCount: game.attemptsCount,
-      timeTakenMs: game.endTime.getTime() - game.startTime.getTime(),
-      correctTitle: game.articleTitle, 
-      partiallyObscuredText: this.obscureText(game.originalText, guessedWords) 
-    };
-  }
-
+  // ==========================================
+  // PUBLIC ROUTER METHODS 
+  // ==========================================
+  // Classifica generale
   static async getLeaderboard(req: Request) {
     let currentUsername: string | null = null;
     const authHeader = req.headers.authorization;
@@ -267,14 +228,14 @@ export class GameController {
       const token = authHeader.split(' ')[1];
       try {
         const secret = process.env.TOKEN_SECRET || 'segreto-di-riserva-locale';
-        // Verifichiamo e decodifichiamo il token in modo sincrono
         const decoded = jwt.verify(token, secret) as any;
         currentUsername = decoded.user; 
       } catch (err) {
-        // Se il token è scaduto o invalido l'utente vedrà la classifica pubblica generica.
+        // Se il token è scaduto o invalido l'utente vedrà la classifica generica
       }
     }
-    // RECUPERO DATI DAL DATABASE
+
+    // recupero dati database
     const wonGames: any = await Game.findAll({
       where: { status: 'WON' },
       include: [{ model: User, attributes: ['userName'] }]
@@ -299,7 +260,6 @@ export class GameController {
       stats[username].totalTime += timeTaken;
     });
 
-    // 3. CALCOLO DELLA CLASSIFICA GLOBALE
     const fullLeaderboard = Object.keys(stats).map(username => {
       return {
         username: username,
@@ -307,37 +267,86 @@ export class GameController {
         averageTimeMs: stats[username].totalTime / stats[username].wins
       };
     });
-
     fullLeaderboard.sort((a, b) => {
       if (b.wins !== a.wins) return b.wins - a.wins;
       return a.averageTimeMs - b.averageTimeMs;      
     });
 
-    // 4. ASSEGNAZIONE DELLA POSIZIONE (RANK)
     const rankedLeaderboard = fullLeaderboard.map((entry, index) => ({
       ...entry,
-      rank: index + 1 // 1 per il primo, 2 per il secondo, ecc.
+      rank: index + 1
     }));
-
-    // 5. TAGLIO ALLA TOP 10
     const top10 = rankedLeaderboard.slice(0, 10);
 
-    // 6. RICERCA DEL GIOCATORE CORRENTE (Se loggato e non in Top 10)
     let currentUserFallback = null;
-    
     if (currentUsername) {
       const userStats = rankedLeaderboard.find(u => u.username === currentUsername);
-      
-      // Salviamo il fallback SOLO se l'utente esiste e la sua posizione è oltre il 10
+      // Salviamo il fallback solo se l'utente esiste e la sua posizione è oltre il 10
       if (userStats && userStats.rank > 10) {
         currentUserFallback = userStats;
       }
     }
 
-    // 7. RISPOSTA AL FRONTEND
     return {
       top10: top10,
       currentUserFallback: currentUserFallback
     };
   }
+
+  // Lista delle partite concluse
+  static async getCompletedGames(req: Request) {
+    // ritorniamo solo le partite odierne
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+
+    const games: any = await Game.findAll({
+      where: {
+        status: ['WON', 'SURRENDERED'],
+        endTime: {
+          [Op.between]: [startOfToday, endOfToday] 
+        }
+      },
+      include: [{ model: User, attributes: ['userName'] }], 
+      order: [['endTime', 'DESC']]
+    });
+
+    return games.map((g: any) => {
+      const start = g.startTime ? new Date(g.startTime).getTime() : 0;
+      const end = g.endTime ? new Date(g.endTime).getTime() : 0;
+      
+      return {
+        id: g.id,
+        player: g.User?.userName || 'Anonimo',
+        status: g.status,
+        attemptsCount: g.attemptsCount,
+        timeTakenMs: (end > 0 && start > 0) ? end - start : 0,
+        endTime: g.endTime
+      };
+    });
+  }
+
+  // Dettaglio di una singola partita conclusa
+  static async getCompletedGameDetails(req: Request) {
+    const gameId = req.params.id as string;
+    const game: any = await Game.findByPk(gameId, {
+      include: [{ model: User, attributes: ['userName'] }]
+    });
+    if (!game || game.status === 'IN_PROGRESS') {
+      throw new Error("Partita non trovata o non ancora conclusa");
+    }
+
+    const guessedWords: string[] = game.guessedWords || [];
+    return {
+      id: game.id,
+      player: game.User ? game.User.userName : 'Anonimo',
+      status: game.status,
+      attemptsCount: game.attemptsCount,
+      timeTakenMs: game.endTime.getTime() - game.startTime.getTime(),
+      correctTitle: game.articleTitle, 
+      partiallyObscuredText: this.obscureText(game.originalText, guessedWords) 
+    };
+  }
+  
 }

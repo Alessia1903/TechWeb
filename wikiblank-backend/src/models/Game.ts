@@ -9,7 +9,7 @@ export function createModel(database: Sequelize) {
     },
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: false // solo gli utenti registrati possono giocare
+      allowNull: false 
     },
     articleTitle: {
       type: DataTypes.STRING,
@@ -40,7 +40,6 @@ export function createModel(database: Sequelize) {
       allowNull: true
     }
   }, {
-    // Opzioni del modello
     tableName: 'games'
   });
 }

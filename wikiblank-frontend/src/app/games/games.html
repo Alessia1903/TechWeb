@@ -36,7 +36,7 @@
           <thead>
             <tr>
               <th>Titolo Articolo</th>
-              <th>Stato</th>
+              <th>Esito</th>
               <th>Tempo Impiegato</th>
               <th>Tentativi</th>
             </tr>
@@ -51,9 +51,9 @@
                   @if (game.status === 'IN_PROGRESS') {
                     <span class="badge warning">In Corso</span>
                   } @else if (game.status === 'WON') {
-                    <span class="badge success">Vinta 🏆</span>
+                    <span class="badge success">Vittoria</span>
                   } @else if (game.status === 'SURRENDERED') {
-                    <span class="badge danger">Arresa 🏳️</span>
+                    <span class="badge danger">Resa</span>
                   }
                 </td>
                 <td>{{ formatDuration(game.startTime, game.endTime) }}</td>

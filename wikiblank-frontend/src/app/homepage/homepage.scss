@@ -43,8 +43,8 @@
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
     border: 1px solid #e1e8ed;
-    overflow: hidden; // Mantiene gli angoli arrotondati della tabella
-    margin-bottom: 1.5rem; /* L'ho ridotto un po' per far avvicinare la card utente */
+    overflow: hidden;
+    margin-bottom: 1.5rem; 
 
     thead {
       tr {

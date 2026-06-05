@@ -4,6 +4,7 @@ import { ensureUsersModifyOnlyOwnGames } from "../middleware/authorization";
 
 export const gameRouter = express.Router();
 
+// Partite personali
 gameRouter.get("/games", (req: Request, res: Response, next: NextFunction) => {
   GameController.getGamesForCurrentUser(req).then(games => {
     res.json(games);
@@ -12,6 +13,7 @@ gameRouter.get("/games", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
+// Inizia nuova partita
 gameRouter.post("/games/start", (req: Request, res: Response, next: NextFunction) => {
   GameController.startNewGame(req).then(game => {
     res.json(game);
@@ -20,6 +22,7 @@ gameRouter.post("/games/start", (req: Request, res: Response, next: NextFunction
   });
 });
 
+// Recupera info partita
 gameRouter.get("/games/:id", ensureUsersModifyOnlyOwnGames, (req: Request, res: Response, next: NextFunction) => {
   GameController.findById(req).then((item) => {
     if (item)
@@ -31,6 +34,7 @@ gameRouter.get("/games/:id", ensureUsersModifyOnlyOwnGames, (req: Request, res: 
   });
 });
 
+// Tentativo parola
 gameRouter.post("/games/:id/guess", ensureUsersModifyOnlyOwnGames, (req: Request, res: Response, next: NextFunction) => {
   GameController.guessWord(req).then(result => {
     res.json(result);
@@ -39,6 +43,7 @@ gameRouter.post("/games/:id/guess", ensureUsersModifyOnlyOwnGames, (req: Request
   });
 });
 
+// Resa
 gameRouter.post("/games/:id/surrender", ensureUsersModifyOnlyOwnGames, (req: Request, res: Response, next: NextFunction) => {
   GameController.surrender(req).then(result => {
     res.json(result);

@@ -1,13 +1,13 @@
 ### VARIABILI GLOBALI
 @baseUrl = http://localhost:3000
-# Sostituisci questa stringa con il token reale dopo aver fatto il login!
+# Da sostituire con il token ottenuto dopo il login 
 @authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicGxheWVyMSIsImlhdCI6MTc3OTg3ODQ0NiwiZXhwIjoxNzc5OTY0ODQ2fQ.keW7fYM5CltWH83nrf6bx23h9N_pnbNHs5E6Wp_uops
 
 ### ==========================================
-### 1. AUTENTICAZIONE E UTENTI
+### AUTH ROUTER
 ### ==========================================
 
-### Registrazione nuovo utente
+### Crea nuovo utente
 POST {{baseUrl}}/signup
 Content-Type: application/json
 
@@ -18,7 +18,7 @@ Content-Type: application/json
 
 ###
 
-### Login utente (Copia il token dalla risposta e incollalo in alto su @authToken!)
+### Login (mi da il token)
 POST {{baseUrl}}/auth
 Content-Type: application/json
 
@@ -29,44 +29,44 @@ Content-Type: application/json
 
 
 ### ==========================================
-### 2. ROTTE PUBBLICHE (Senza Token)
+### PUBLIC ROUTER
 ### ==========================================
 
-### Guarda la classifica
+### Classifica generale
 GET {{baseUrl}}/leaderboard
 
 ###
 
-### Guarda l'archivio delle partite concluse
+### Lista delle partite concluse
 GET {{baseUrl}}/archive
 
-### Visualizza una partita archiviata (Vinta)
+### Dettaglio di una singola partita conclusa
 # @prompt idPartita Inserisci l'ID della partita
 GET {{baseUrl}}/archive/{{idPartita}}
 
 
 ### ==========================================
-### 3. IL GIOCO (Richiede il Token JWT)
+### GAME ROUTER
 ### ==========================================
 
-### Inizia una nuova partita
-POST {{baseUrl}}/games/start
-Authorization: Bearer {{authToken}}
-
-###
-
-### Visualizza lo storico delle mie partite
+### Partite personali
 GET {{baseUrl}}/games
 Authorization: Bearer {{authToken}}
 
 ###
 
-### Recupera una singola partita
+### Inizia nuova partita
+POST {{baseUrl}}/games/start
+Authorization: Bearer {{authToken}}
+
+###
+
+### Recupera info partita
 # @prompt idPartita Inserisci l'ID della partita
 GET {{baseUrl}}/games/{{idPartita}}
 Authorization: Bearer {{authToken}}
 
-### Prova a indovinare una parola (Sostituisci l'ID con quello della tua partita)
+### Tentativo parola
 # @prompt idPartita Inserisci l'ID della partita
 POST {{baseUrl}}/games/{{idPartita}}/guess
 Authorization: Bearer {{authToken}}
@@ -78,7 +78,7 @@ Content-Type: application/json
 
 ###
 
-### Arrenditi in una partita specifica
+### Resa
 # @prompt idPartita Inserisci l'ID della partita
 POST {{baseUrl}}/games/{{idPartita}}/surrender
 Authorization: Bearer {{authToken}}
