@@ -5,11 +5,11 @@ import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common'; // Utile per formattare le date in modo carino
 
 @Component({
-  selector: 'app-games',
+  selector: 'app-home',
   standalone: true,
   imports: [DatePipe], // Importiamo il "tubo" per le date
-  templateUrl: './games.html',
-  styleUrl: './games.scss'
+  templateUrl: './home.html',
+  styleUrl: './home.scss'
 })
 export class GamesComponent implements OnInit {
   restService = inject(RestBackendService);

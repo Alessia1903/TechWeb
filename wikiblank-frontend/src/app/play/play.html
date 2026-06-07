@@ -18,28 +18,32 @@
         </div>
 
         <div class="right-column">
-          
-          <header class="game-stats-header">
-            <p>Tentativi: <strong>{{ gameData.attemptsCount }}</strong></p>
-            <button class="btn-surrender" (click)="handleSurrender()">🏳️ Arrenditi</button>
-          </header>
+  
+          <div class="tool-card sticky-top">
+            <header class="game-stats-header">
+              <p>Tentativi: <strong>{{ gameData.attemptsCount }}</strong></p>
+              <button class="btn-surrender" (click)="handleSurrender()">Arrenditi 🏳️</button>
+            </header>
 
-          <form [formGroup]="guessForm" (ngSubmit)="handleGuess()" class="guess-form">
-            <input type="text" formControlName="word" placeholder="Inserisci una parola..." autocomplete="off">
-            <button type="submit" [disabled]="guessForm.invalid">Tenta</button>
-          </form>
+            <form [formGroup]="guessForm" (ngSubmit)="handleGuess()" class="guess-form">
+              <input type="text" formControlName="word" placeholder="Inserisci una parola..." autocomplete="off">
+              <button type="submit" [disabled]="guessForm.invalid">Tenta</button>
+            </form>
+          </div>
 
-          <div class="guessed-words-section">
-            <h3>
-              Parole indovinate finora:
-              <span class="words-count">{{ gameData.guessedWords.length }}</span>
-            </h3>
-            <div class="words-badges">
-              @for (word of gameData.guessedWords; track word) {
-                <span class="word-badge">{{ word }}</span>
-              } @empty {
-                <p class="empty-state">Nessuna parola indovinata ancora. Comincia a digitare!</p>
-              }
+          <div class="tool-card words-list">
+            <div class="guessed-words-section">
+              <h3>
+                Parole indovinate finora:
+                <span class="words-count">{{ gameData.guessedWords.length }}</span>
+              </h3>
+              <div class="words-badges">
+                @for (word of gameData.guessedWords.slice().reverse(); track word) {
+                  <span class="word-badge">{{ word }}</span>
+                } @empty {
+                  <p class="empty-state">Nessuna parola indovinata ancora. Comincia a digitare!</p>
+                }
+              </div>
             </div>
           </div>
 
@@ -52,7 +56,7 @@
       <div class="game-over-card" [class.completed]="gameData.status === 'WON'">
         <h2>Partita Conclusa: {{ gameData.status === 'WON' ? 'Vittoria! 🏆' : 'Resa 🏳️' }}</h2>
         <p>Hai completato la sfida in <strong>{{ gameData.attemptsCount }}</strong> tentativi totali.</p>
-        <button routerLink="/games" class="btn-back">Torna alla Home</button>
+        <button routerLink="/home" class="btn-back">Torna alla Home</button>
       </div>
 
       <div class="wiki-content-box">

@@ -30,14 +30,13 @@ export class PlayComponent implements OnInit {
   });
 
   ngOnInit() {
-    // 1. Catturiamo l'ID dall'URL (es. /play/12 -> id = 12)
     const idFromUrl = this.route.snapshot.paramMap.get('id');
     if (idFromUrl) {
       this.gameId = +idFromUrl; // Il '+' lo trasforma da stringa a numero
       this.loadGame();
     } else {
       this.toastr.error("Partita non valida", "Errore");
-      this.router.navigateByUrl('/games');
+      this.router.navigateByUrl('/home');
     }
   }
 
@@ -50,7 +49,7 @@ export class PlayComponent implements OnInit {
       },
       error: (err) => {
         this.toastr.error("Impossibile caricare la partita.", "Errore");
-        this.router.navigateByUrl('/games');
+        this.router.navigateByUrl('/home');
       }
     });
   }

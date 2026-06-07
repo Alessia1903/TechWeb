@@ -12,8 +12,7 @@
 
   @if (!isLoading && archivedGames.length === 0) {
     <div class="empty-state">
-      <p>Nessuna partita è stata ancora conclusa. Sii il primo a lasciare il segno!</p>
-      <button routerLink="/home" class="btn-play">Vai a giocare</button>
+      <p>Nessuna partita è stata ancora conclusa oggi. Sii il primo a lasciare il segno!</p>
     </div>
   }
 
@@ -58,7 +57,7 @@
   <h3>Vuoi scoprire chi sono i campioni assoluti?</h3>
   <p>Dai un'occhiata ai giocatori più accaniti.</p>
   
-  <button routerLink="/homepage" class="btn-archive">
+  <button routerLink="/leaderboard" class="btn-archive">
     Torna alla Classifica Globale
   </button>
 </div>

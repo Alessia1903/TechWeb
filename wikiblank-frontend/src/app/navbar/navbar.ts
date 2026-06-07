@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../services/auth/auth'; // Assicurati che il percorso sia corretto
+import { AuthService } from '../services/auth/auth'; 
 
 @Component({
   selector: 'app-navbar',
@@ -29,7 +29,7 @@ export class NavbarComponent {
   // Aggiungiamo un metodo comodissimo per disconnettersi
   logout() {
     this.authService.logout();
-    this.router.navigateByUrl('/login');
-    this.handleNavigationClick(); // Chiudiamo il menu mobile se era aperto
+    this.router.navigateByUrl('/leaderboard'); 
+    this.handleNavigationClick(); 
   }
 }

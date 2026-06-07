@@ -10,12 +10,12 @@
   <div class="navbar-menu" [class.open]="isOpen">
     
     @if (authService.isAuthenticated()) {
-      <a routerLink="/games" routerLinkActive="active" (click)="handleNavigationClick()">
+      <a routerLink="/home" routerLinkActive="active" (click)="handleNavigationClick()">
         <img src="/assets/home-icon.png" alt="Home" class="nav-icon">
         Home
       </a>
 
-      <a routerLink="/homepage" routerLinkActive="active" (click)="handleNavigationClick()">
+      <a routerLink="/leaderboard" routerLinkActive="active" (click)="handleNavigationClick()">
         <img src="/assets/classifica-icon.png" alt="Classifica" class="nav-icon">
         Classifica
       </a>

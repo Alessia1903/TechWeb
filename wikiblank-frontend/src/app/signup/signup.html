@@ -25,6 +25,11 @@
           }
         </small>
       }
+      @if (serverErrorMessage) {
+        <div class="alert-box error-box">
+          {{ serverErrorMessage }}
+        </div>
+      }
     </div>
 
     <button type="submit" [disabled]="signupForm.invalid">Crea Account</button>

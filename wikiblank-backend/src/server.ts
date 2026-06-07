@@ -9,8 +9,21 @@ import { enforceAuthentication } from './middleware/authorization';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// domini autorizzati (frontend)
+const whitelist = ['http://localhost:4200'];
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Bloccato dalle policy CORS'));
+    }
+  },
+  optionsSuccessStatus: 200 
+};
+
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 // ROTTE PUBBLICHE: 
 app.use('/', authenticationRouter);

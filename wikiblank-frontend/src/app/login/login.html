@@ -5,15 +5,21 @@
     
     <div class="form-group">
       <label for="usr">Username</label>
-      <input id="usr" type="text" formControlName="usr" placeholder="Es. player1">
+      <input id="usr" type="text" formControlName="usr" placeholder="Username">
     </div>
 
     <div class="form-group">
       <label for="pwd">Password</label>
-      <input id="pwd" type="password" formControlName="pwd" placeholder="La tua password">
+      <input id="pwd" type="password" formControlName="pwd" placeholder="Password">
+
+      @if (serverErrorMessage) {
+        <div class="alert-box error-box">
+          {{ serverErrorMessage }}
+        </div>
+      }
     </div>
 
-    <button type="submit" [disabled]="loginForm.invalid">Entra nel gioco</button>
+    <button type="submit" [disabled]="loginForm.invalid">Accedi</button>
   </form>
 
   <p style="margin-top: 15px; text-align: center;">

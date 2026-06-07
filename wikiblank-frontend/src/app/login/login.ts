@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-// Questi sono i "postini" che creeremo tra poco!
 import { AuthService } from '../services/auth/auth';
 import { RestBackendService } from '../services/rest-backend/rest-backend';
 
@@ -20,9 +19,14 @@ export class LoginComponent {
   authService = inject(AuthService);
   
   submitted = false;
+  serverErrorMessage: string | null = null;
   
   loginForm = new FormGroup({
-    usr: new FormControl('', [Validators.required]),
+    usr: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(20)
+    ]),
     pwd: new FormControl('', [
       Validators.required, 
       Validators.minLength(5), 
@@ -34,7 +38,7 @@ export class LoginComponent {
     this.submitted = true;
     
     if(this.loginForm.invalid) {
-      alert("Attenzione: Inserisci username e password validi!");
+      this.serverErrorMessage ="Attenzione: Inserisci username e password validi!";
       return;
     } 
 
@@ -47,12 +51,18 @@ export class LoginComponent {
         this.authService.updateToken(response.token); 
         this.toastr.success(`Benvenuto ${this.loginForm.value.usr}!`, 'Accesso Eseguito');
         setTimeout(() => {
-          this.router.navigateByUrl("/games"); 
+          this.router.navigateByUrl("/home"); 
         }, 50);
       },
       error: (err) => {
-        this.toastr.error("Credenziali non valide! Riprova.", "Ops! Errore di Accesso");
+        this.serverErrorMessage = "Credenziali non valide! Riprova.";
       }
+    });
+  }
+
+  ngOnInit() {
+    this.loginForm.valueChanges.subscribe(() => {
+      this.serverErrorMessage = null;
     });
   }
 }

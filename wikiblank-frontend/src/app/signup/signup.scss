@@ -78,6 +78,15 @@
         font-weight: 600;
         animation: fadeIn 0.3s ease-in-out;
       }
+
+      .error-box {
+        display: block;
+        color: #e74c3c;
+        font-size: 1rem;
+        margin-top: 0.4rem;
+        font-weight: 600;
+        animation: fadeIn 0.3s ease-in-out;
+      }
     }
 
     button[type="submit"] {

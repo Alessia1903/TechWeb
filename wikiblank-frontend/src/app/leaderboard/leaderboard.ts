@@ -4,13 +4,13 @@ import { ToastrService } from 'ngx-toastr';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-homepage',
+  selector: 'app-leaderboard',
   standalone: true,
   imports: [RouterLink],
-  templateUrl: './homepage.html',
-  styleUrl: './homepage.scss'
+  templateUrl: './leaderboard.html',
+  styleUrl: './leaderboard.scss'
 })
-export class HomepageComponent implements OnInit {
+export class LeaderboardComponent implements OnInit {
   // Iniezione dei servizi
   restService = inject(RestBackendService);
   toastr = inject(ToastrService);

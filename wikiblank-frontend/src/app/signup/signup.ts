@@ -17,14 +17,18 @@ export class SignupComponent {
   restService = inject(RestBackendService);
   
   submitted = false;
+  serverErrorMessage: string | null = null;
   
-  // Usiamo userName e password come fatto nel Login!
   signupForm = new FormGroup({
-    usr: new FormControl('', [Validators.required]),
+    usr: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(20)
+    ]),
     pwd: new FormControl('', [
       Validators.required, 
-      Validators.minLength(4), 
-      Validators.maxLength(16)
+      Validators.minLength(5), 
+      Validators.maxLength(20)
     ])
   });
   
@@ -32,7 +36,7 @@ export class SignupComponent {
     this.submitted = true;
     
     if(this.signupForm.invalid){
-      this.toastr.error("I dati che hai inserito non sono validi!", "Ops! Controlla i campi");
+      this.serverErrorMessage = "I dati che hai inserito non sono validi. Controlla i campi evidenziati.";
       return;
     } 
 
@@ -41,12 +45,19 @@ export class SignupComponent {
       pwd: this.signupForm.value.pwd as string,
     }).subscribe({
       error: (err) => {
-        this.toastr.error("Questo username è già stato preso. Scegline un altro!", "Registrazione fallita");
+        this.serverErrorMessage = "Questo username è già stato preso. Scegline un altro!";
       },
       complete: () => {
+        this.serverErrorMessage = null;
         this.toastr.success(`Ora puoi accedere con il tuo account`, `Benvenuto ${this.signupForm.value.usr}!`);
         this.router.navigateByUrl("/login");
       }
+    });
+  }
+
+  ngOnInit() {
+    this.signupForm.valueChanges.subscribe(() => {
+      this.serverErrorMessage = null;
     });
   }
 }

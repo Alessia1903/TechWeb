@@ -1,26 +1,26 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login';
 import { SignupComponent } from './signup/signup';
-import { HomepageComponent } from './homepage/homepage'; // <-- Importa la homepage
+import { LeaderboardComponent } from './leaderboard/leaderboard'; 
 import { ArchiveComponent } from './archive/archive';
 import { ArchiveDetailComponent } from './archive-detail/archive-detail';
-import { GamesComponent } from './games/games';
+import { GamesComponent } from './home/home';
 import { PlayComponent } from './play/play';
-import { authGuard } from './guards/auth.guard'; // <-- Importa il buttafuori
+import { authGuard } from './guards/auth.guard'; 
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'homepage', component: HomepageComponent},
+  { path: 'leaderboard', component: LeaderboardComponent},
   { path: 'archive', component: ArchiveComponent },
   { path: 'archive/:id', component: ArchiveDetailComponent },
   { 
     path: '', 
-    redirectTo: '/homepage', 
+    redirectTo: '/leaderboard', 
     pathMatch: 'full' 
   },
   { 
-    path: 'games', 
+    path: 'home', 
     component: GamesComponent,
     canActivate: [authGuard] // Proteggiamo la pagina!
   },

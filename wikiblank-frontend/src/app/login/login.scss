@@ -57,6 +57,15 @@
           box-shadow: 0 0 0 3px rgba(126, 217, 87, 0.2); /* Alone verde morbido */
         }
       }
+
+      .error-box {
+        display: block;
+        color: #e74c3c;
+        font-size: 1rem;
+        margin-top: 0.4rem;
+        font-weight: 600;
+        animation: fadeIn 0.3s ease-in-out;
+      }
     }
 
     button[type="submit"] {
