@@ -26,7 +26,7 @@ export class NavbarComponent {
 
   logout() {
     this.authService.logout();
-    this.router.navigateByUrl('/leaderboard'); 
+    window.location.href = '/leaderboard';
     this.handleNavigationClick(); 
   }
 }

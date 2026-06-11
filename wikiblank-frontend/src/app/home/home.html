@@ -19,7 +19,7 @@
       } @else {
         <div class="new-game-card">
           <h3>Sei pronto per una nuova sfida?</h3>
-          <button class="btn-start" (click)="startNewGame()">
+          <button class="btn-start" (click)="startNewGame()" [disabled]="isLoading">
             Inizia Nuova Partita
           </button>
         </div>

@@ -7,6 +7,7 @@ import { ArchiveDetailComponent } from './archive-detail/archive-detail';
 import { GamesComponent } from './home/home';
 import { PlayComponent } from './play/play';
 import { authGuard } from './guards/auth.guard'; 
+import { NotFoundComponent } from './not-found/not-found';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,5 +29,6 @@ export const routes: Routes = [
     path: 'play/:id', 
     component: PlayComponent,
     canActivate: [authGuard] // Proteggiamo la pagina!
-  }
+  },
+  { path: '**', component: NotFoundComponent }
 ];

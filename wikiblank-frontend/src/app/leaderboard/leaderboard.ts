@@ -12,15 +12,17 @@ import { FormatTimePipe } from '../shared/pipes/time-format-pipe';
   styleUrl: './leaderboard.scss'
 })
 export class LeaderboardComponent implements OnInit {
-  // Iniezione dei servizi
+
   restService = inject(RestBackendService);
   toastr = inject(ToastrService);
 
   leaderboard: any[] = [];
   currentUserFallback: any = null;
   isLoading = true; 
+  currentUsername: string = '';
 
   ngOnInit() {
+    this.currentUsername = localStorage.getItem('user') || '';
     this.fetchLeaderboard();
   }
 

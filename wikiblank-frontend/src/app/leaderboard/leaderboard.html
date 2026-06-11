@@ -18,7 +18,7 @@
       </thead>
       <tbody>
         @for (player of leaderboard; track player.username) {
-          <tr>
+          <tr [class.highlight-row]="player.username === currentUsername">
             <td><strong>{{ player.rank }}°</strong></td> 
             <td>{{ player.username }}</td>
             <td>{{ player.wins }}</td>

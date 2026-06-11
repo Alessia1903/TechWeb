@@ -106,10 +106,25 @@ export class GameController {
 
   // Inizia nuova partita
   static async startNewGame(req: Request) {
+    const currentUser = await User.findOne({ where: { username: (req as any).username } });
+    if (!currentUser) throw new Error("Utente non trovato");
+    const userId = (currentUser as any).id;
+
+    // verifica se l'utente ha già una partita in corso
+    const existingGame = await Game.findOne({
+      where: {
+        userId: userId,
+        status: 'IN_PROGRESS'
+      }
+    });
+
+    if (existingGame) {
+      return { existingGameId: (existingGame as any).id };
+    }
+
     const article = await this.fetchRandomWikipediaArticle();
     const obscuredText = this.obscureText(article.text);
     const obscuredTitle = this.obscureText(article.title);
-    const currentUser = await User.findOne({ where: { username: (req as any).username } });
 
     let game = Game.build({
       articleTitle: article.title, 
@@ -122,8 +137,6 @@ export class GameController {
 
     return {
       gameId: (game as any).id,
-      obscuredTitle: obscuredTitle,
-      obscuredText: obscuredText
     };
   }
 

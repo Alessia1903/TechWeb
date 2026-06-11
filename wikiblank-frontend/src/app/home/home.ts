@@ -46,11 +46,23 @@ export class GamesComponent implements OnInit {
   }
 
   startNewGame() {
+    // evita race conditions
+    if (this.isLoading) return;
+    this.isLoading = true;
+
     this.restService.startGame().subscribe({
-      next: (newGame) => {
-        this.router.navigate(['/play', newGame.gameId]); 
+      next: (response: any) => { 
+        this.isLoading = false; 
+
+        // se l'utente ha già una partita in corso
+        if (response.existingGameId) {
+          this.router.navigate(['/play', response.existingGameId]);         
+        } else if (response.gameId) {
+          this.router.navigate(['/play', response.gameId]);
+        }
       },
-      error: (err) => {
+      error: () => {
+        this.isLoading = false;
         this.toastr.error("Non è stato possibile avviare una nuova partita.", "Errore server");
       }
     });

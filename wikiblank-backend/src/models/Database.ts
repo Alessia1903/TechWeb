@@ -19,12 +19,12 @@ createGameModel(database);
 export const { User, Game } = database.models;
 
 // associazioni
-User.hasMany(Game, { foreignKey: 'userId' });
+User.hasMany(Game, { foreignKey: 'userId', onDelete: 'CASCADE', hooks: true});
 Game.belongsTo(User, { foreignKey: 'userId' });
 
 // sincronizzazione automatica
 database.sync().then(() => {
-  console.log("Database sincronizzato correttamente");
+  console.log("Database sincronizzato e aggiornato correttamente");
 }).catch(err => {
-  console.error("Errore durante la sincronizzazione del database: " + err.message);
+  console.error("Errore durante la sincronizzazione del database: " , err);
 });

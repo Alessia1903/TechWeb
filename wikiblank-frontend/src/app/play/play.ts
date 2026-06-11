@@ -24,7 +24,7 @@ export class PlayComponent implements OnInit {
   isLoading = true;
 
   guessForm = new FormGroup({
-    word: new FormControl('', [Validators.required, Validators.minLength(1)])
+    word: new FormControl('', [Validators.required, Validators.minLength(1), Validators.pattern(/^\S*$/)])
   });
 
   ngOnInit() {

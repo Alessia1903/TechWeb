@@ -70,10 +70,6 @@
           border-bottom: none;
         }
 
-        &:hover {
-          background-color: #f4f8fb; 
-        }
-
         td {
           padding: 1.2rem 1rem;
           vertical-align: middle;
@@ -120,6 +116,18 @@
             border-radius: 50%;
             border: 1px solid #fadbd8;
           }
+        }
+
+        &:hover {
+          background-color: #f4f8fb; 
+        }
+
+        &.highlight-row {
+          background-color: #e0fffb;
+        }
+
+        &.highlight-row td:first-child {
+          border-left: 4px solid #3498db;
         }
       }
     }
