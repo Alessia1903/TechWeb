@@ -13,14 +13,14 @@ Di seguito sono riportate le istruzioni dettagliate per installare le dipendenze
 
 ## 🛠️ Prerequisiti di Sistema
 Assicurarsi di avere installato sul proprio computer:
-* **Node.js** (versione consigliata: 18.x o superiore)
+* **Node.js** 
 * **npm** (incluso con Node.js)
 
 ---
 
 ## ⚙️ 1. Avvio del Back-end
 
-Il backend utilizza SQLite, quindi il database verrà generato automaticamente al primo avvio.
+Il back-end include già il file di database **SQLite** (`wikiblank.sqlite`) pre-popolato con utenti e storici di gioco per facilitare la valutazione delle funzionalità.
 
 1. Aprire il terminale e navigare nella cartella del backend:
    ```bash
@@ -54,8 +54,16 @@ Aprire un **nuovo** terminale (lasciando in esecuzione quello del backend) e seg
    ```bash
    npm start
    ```
-   *(oppure `ng serve` se si ha Angular CLI installato globalmente)*
 
 > **Nota:** L'applicazione frontend sarà accessibile dal browser all'indirizzo `http://localhost:4200`.
 
 ---
+
+## 📝 Credenziali di Test
+
+Dato che il database è già popolato, per testare l'applicazione è possibile effettuare il login direttamente dal front-end utilizzando uno dei seguenti utenti di test già registrati:
+
+* **Username:** `alessia` | **Password:** `alessia`
+* **Username:** `player1` | **Password:** `passwordSegreta123`
+
+In alternativa, è sempre possibile registrare un nuovo utente tramite la schermata di registrazione.
