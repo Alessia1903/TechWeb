@@ -1,3 +1,29 @@
+# Dipendenze Node.js
 node_modules/
-.env
+
+# Cartelle di Build 
 dist/
+build/
+
+# File del Database SQLite 
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+
+# File di Ambiente e Sicurezza (Nascondi le password vere)
+.env
+.env.*
+!.env.dummy
+!.env.example
+
+# Log e Debug
+*.log
+npm-debug.log*
+
+# File del Sistema Operativo e Editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
