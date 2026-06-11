@@ -14,25 +14,23 @@ import confetti from 'canvas-confetti';
   styleUrl: './play.scss'
 })
 export class PlayComponent implements OnInit {
-  // Iniezione delle dipendenze
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private restService = inject(RestBackendService);
   private toastr = inject(ToastrService);
 
   gameId!: number;
-  gameData: any = null; // Qui salveremo la risposta del backend
+  gameData: any = null;
   isLoading = true;
 
-  // Form per inviare la parola da indovinare
   guessForm = new FormGroup({
-    word: new FormControl('', [Validators.required, Validators.minLength(1), Validators.pattern(/^\S+$/)])
+    word: new FormControl('', [Validators.required, Validators.minLength(1)])
   });
 
   ngOnInit() {
     const idFromUrl = this.route.snapshot.paramMap.get('id');
     if (idFromUrl) {
-      this.gameId = +idFromUrl; // Il '+' lo trasforma da stringa a numero
+      this.gameId = +idFromUrl; // + lo trasforma da stringa a numero
       this.loadGame();
     } else {
       this.toastr.error("Partita non valida", "Errore");
@@ -40,7 +38,7 @@ export class PlayComponent implements OnInit {
     }
   }
 
-  // Carica (o aggiorna) i dati della partita attuale
+  // carica o aggiorna
   loadGame() {
     this.restService.getGameById(this.gameId).subscribe({
       next: (data) => {
@@ -58,18 +56,15 @@ export class PlayComponent implements OnInit {
     if (this.guessForm.invalid) return;
     const rawWord = this.guessForm.value.word as string;
     const guessedWord = rawWord.trim().split(' ')[0];
-    // Chiamiamo l'API del backend per verificare la parola
     this.restService.guessWord(this.gameId, guessedWord).subscribe({
       next: (response: any) => {
+        this.guessForm.reset(); 
         
-        this.guessForm.reset(); // Svuota la casella di testo
-        
-        // 1. Il backend ci dice che abbiamo vinto? Coriandoli istantanei! 🎉
         if (response.victory) {
           this.triggerConfetti();
         }
 
-        // 3. Ricarichiamo la partita per vedere il testo aggiornato e la nuova parola nella lista
+        // in ogni caso ricarico la partita per vedere il testo aggiornato 
         this.loadGame(); 
       },
       error: (err) => {
@@ -78,15 +73,13 @@ export class PlayComponent implements OnInit {
     });
   }
 
-  // Gestisce il pulsante per arrendersi
   handleSurrender() {
-    if (confirm("Sei sicuro di volerti arrendere? Vedrai tutto il testo in chiaro ma perderai la partita.")) {
+    if (confirm("Sei sicuro di volerti arrendere? Vedrai la soluzione ma perderai la partita.")) {
       this.restService.surrender(this.gameId).subscribe({
         next: (response: any) => { 
           this.gameData.status = response.status;
           this.gameData.fullText = response.fullText;
           this.gameData.correctTitle = response.correctTitle;
-          
         },
         error: (err) => {
           this.toastr.error("Impossibile arrendersi, riprova.", "Errore");
@@ -97,9 +90,9 @@ export class PlayComponent implements OnInit {
 
   triggerConfetti() {
     confetti({
-      particleCount: 500, // Numero di coriandoli
-      spread: 100,         // Quanto si allargano
-      origin: { y: 0.6 }, // Partono da sopra
+      particleCount: 500, 
+      spread: 100,        
+      origin: { y: 0.6 }, 
       colors: ['#7ed957', '#1abc9c', '#f1c40f', '#e74c3c', '#9b59b6'] 
     });
   }

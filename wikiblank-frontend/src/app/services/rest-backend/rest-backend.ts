@@ -9,7 +9,7 @@ export class RestBackendService {
   private url = "http://localhost:3000";
   private http = inject(HttpClient);
 
-  // Diciamo ad Angular che parleremo in JSON
+  //header di ogni spedizione per specificare formato (json)
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -26,7 +26,7 @@ export class RestBackendService {
   }
 
   signup(signupRequest: any) {
-    const url = `${this.url}/signup`; // Assicurati che sia /users o /signup in base al tuo backend
+    const url = `${this.url}/signup`; 
     return this.http.post<any>(url, signupRequest, this.httpOptions);
   }
 
@@ -50,7 +50,7 @@ export class RestBackendService {
   }
 
   // ==========================================
-  // ROTTE PRIVATE DI GIOCO (Servirà il Token!)
+  // ROTTE PRIVATE DI GIOCO (Serve il Token)
   // ==========================================
 
   getGames() {

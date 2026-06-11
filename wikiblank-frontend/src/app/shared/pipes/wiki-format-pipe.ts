@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform, inject } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
+// Per la corretta formattazione di titoli di paragrafi/sottoparagrafi/liste
 @Pipe({
   name: 'wikiFormat',
   standalone: true
@@ -9,14 +10,19 @@ export class WikiFormatPipe implements PipeTransform {
   
   sanitizer = inject(DomSanitizer);
 
-  transform(rawText: string): SafeHtml {
+  transform(rawText: string, isInline: boolean = false): SafeHtml {
     if (!rawText) return '';
+
+    // se è il titolo
+    if (isInline) {
+      const inlineHtml = rawText.replace(/(_+)/g, '<span class="redacted-word">$1</span>');
+      return this.sanitizer.bypassSecurityTrustHtml(inlineHtml);
+    }
 
     const lines = rawText.split('\n');
     const processedElements: string[] = [];
     let listBuffer: string[] = [];
     
-    // LA CHIAVE: Teniamo traccia del capitolo che stiamo leggendo!
     let currentSectionName = '';
 
     // Parole chiave dei titoli in cui Wikipedia inserisce regolarmente liste
@@ -38,7 +44,7 @@ export class WikiFormatPipe implements PipeTransform {
       let trimmed = line.trim();
       if (!trimmed) continue;
 
-      // 1. GESTIONE TITOLI E AGGIORNAMENTO DEL CONTESTO
+      // GESTIONE TITOLI 
       let isHeading = false;
       let headingText = '';
 
@@ -65,18 +71,16 @@ export class WikiFormatPipe implements PipeTransform {
       }
 
       if (isHeading) {
-        // Memorizziamo in minuscolo il nome del capitolo in cui siamo appena entrati
         currentSectionName = headingText.toLowerCase();
         continue;
       }
 
-      // 2. IDENTIFICAZIONE DELLE LISTE (Approccio Contestuale)
+      // IDENTIFICAZIONE DELLE LISTE 
       let isListItem = false;
-      
       // Controlliamo se siamo in una sezione in cui ci aspettiamo liste
       const inListSection = listHeavySections.some(sec => currentSectionName.includes(sec));
 
-      // Caso A: Liste esplicite di Wikipedia (* o note come (__))
+      // Liste esplicite di Wikipedia (* o note come (__))
       if (trimmed.startsWith('*')) {
         isListItem = true;
         trimmed = trimmed.substring(1).trim();
@@ -84,33 +88,22 @@ export class WikiFormatPipe implements PipeTransform {
       else if (trimmed.startsWith('(__)')) {
         isListItem = true;
       }
-      
-      // Caso B: REGOLE AMPIE (Se siamo in Personaggi, Tracce, Cast, ecc.)
+      // Liste implicite
       else if (inListSection) {
-        // Se siamo in queste sezioni, consideriamo lista QUALSIASI riga che:
-        // 1. Contiene due punti ": " (es. "Duchessa: Descrizione lunghissima...")
-        // 2. Contiene un trattino separatore (es. "Titolo - Autore")
-        // 3. NON finisce con un punto (senza nessun limite di caratteri!)
         if (trimmed.includes(': ') || /\s+[-\u2013\u2014]\s+/.test(trimmed) || !/[.!?:"'»\u201D]$/.test(trimmed)) {
           isListItem = true;
         }
-        // Nota: Le brevi intro come "La colonna sonora è composta da 32 tracce." non hanno i 2 punti, 
-        // non hanno trattini e finiscono col punto, quindi verranno giustamente stampate come paragrafo!
       }
-      
-      // Caso C: REGOLE RESTRITTIVE (Se siamo in Trama, Incassi, Produzione, ecc.)
       else {
-        // Collegamenti esterni
         if (/, su /i.test(trimmed) && trimmed.length < 300) {
           isListItem = true; 
         } 
-        // Elenchi generici sparsi: molto rigidi, solo righe brevi e senza punto
         else if (trimmed.length < 150 && !/[.!?:"'»\u201D]$/.test(trimmed)) {
           isListItem = true;
         }
       }
 
-      // 3. COSTRUZIONE DELL'HTML
+      // COSTRUZIONE DELL'HTML
       if (isListItem) {
         listBuffer.push(`<li>${trimmed}</li>`);
       } else {
@@ -118,9 +111,13 @@ export class WikiFormatPipe implements PipeTransform {
         processedElements.push(`<p>${trimmed}</p>`);
       }
     }
-
-    flushList(); // Chiude un'eventuale lista alla fine del testo
+    flushList(); 
     
-    return this.sanitizer.bypassSecurityTrustHtml(processedElements.join('\n'));
+    let finalHtml = processedElements.join('\n');
+
+    // Per non visualizzare i trattini
+    finalHtml = finalHtml.replace(/(_+)/g, '<span class="redacted-word">$1</span>');
+    
+    return this.sanitizer.bypassSecurityTrustHtml(finalHtml);
   }
 }

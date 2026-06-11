@@ -6,19 +6,25 @@
 
   .btn-back {
     padding: 6px 12px;
-    background-color: #007bff;
+    background-color: #3498db;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: 1.2rem;
+    transition: all 0.2s ease-in-out;
+    font-weight: 700;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
 
     display: inline-flex;
     align-self: flex-start;
     margin: 0 0 2rem auto;
     
-    &:hover { background-color: #0056b3; }
+    &:hover { 
+      background-color: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(52, 152, 219, 0.35);
+    }
   }
 
   .loading {
@@ -38,13 +44,13 @@
       text-align: center;
       margin-bottom: 2rem;
       h1 { margin: 0; color: #333; }
-      .subtitle { color: #666; font-size: 1.1rem; margin-top: 0.5rem; }
+      .subtitle { color: #3498db; font-size: 1.1rem; margin-top: 0.5rem; }
     }
 
     .stats-grid {
       display: flex;
       justify-content: space-around;
-      background: #f8f9fa;
+      background: #e0f0ff;
       padding: 1.5rem;
       border-radius: 8px;
       margin-bottom: 2rem;
@@ -54,8 +60,43 @@
         flex-direction: column;
         align-items: center;
         
-        .label { color: #666; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-        .value { color: #333; font-size: 1.3rem; font-weight: bold; margin-top: 0.5rem; }
+        .label { 
+          color: #666; 
+          font-size: 1rem; 
+          font-weight: 600;
+          text-transform: uppercase; 
+          letter-spacing: 1px; 
+        }
+        
+        .value { 
+          color: #333; 
+          font-size: 1.3rem; 
+          font-weight: bold; 
+          margin-top: 0.5rem;
+        }
+
+        // Etichette di stato 
+        .badge {
+          display: inline-block;
+          padding: 0.4rem 0.8rem;
+          border-radius: 20px;
+          font-size: 1rem;
+          font-weight: bold;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+
+          &.win {
+            background-color: #ffffff;
+            color: #1abc9c;
+            border: 3px solid #a3e4d7;
+          }
+
+          &.loss {
+            background-color: #ffffff;
+            color: #e74c3c;
+            border: 3px solid #fadbd8;
+          }
+        }
       }
     }
 
@@ -80,17 +121,15 @@
   font-size: 1.1rem;
   text-align: justify;
 
-  /* Stile per i Titoli principali (==) */
   h2 {
     font-size: 1.6rem;
     color: #000;
-    border-bottom: 1px solid #a2a9b1; /* La classica riga grigia di Wikipedia */
+    border-bottom: 1px solid #a2a9b1; 
     padding-bottom: 0.3em;
     margin-top: 2em;
     margin-bottom: 1em;
   }
 
-  /* Stile per i Sottotitoli (===) */
   h3 {
     font-size: 1.3rem;
     color: #222;
@@ -98,12 +137,10 @@
     margin-bottom: 0.8em;
   }
 
-  /* Stile per i paragrafi */
   p {
     margin-bottom: 1.2em;
   }
 
-  /* Stile per le liste */
   .wiki-list-item {
     margin-left: 20px;
     margin-bottom: 0.5em;

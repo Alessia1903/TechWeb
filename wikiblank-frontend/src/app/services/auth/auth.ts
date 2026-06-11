@@ -1,6 +1,6 @@
 import { Injectable, WritableSignal, computed, effect, signal } from '@angular/core';
 import { jwtDecode } from "jwt-decode";
-import { AuthState } from './auth-state.type'; // Assicurati che il percorso sia corretto!
+import { AuthState } from './auth-state.type';
 
 @Injectable({
   providedIn: 'root'
@@ -8,15 +8,17 @@ import { AuthState } from './auth-state.type'; // Assicurati che il percorso sia
 export class AuthService {
   
   authState: WritableSignal<AuthState> = signal<AuthState>({
-    user: this.getUser(),
+    user: this.getUser(),       //from local storage
     token: this.getToken(), 
     isAuthenticated: this.verifyToken(this.getToken()) 
   });
 
+  // computed signal (read-only)
   user = computed(() => this.authState().user);
   token = computed(() => this.authState().token);
   isAuthenticated = computed(() => this.authState().isAuthenticated);
 
+  // effect to keep localStorage aligned with this data
   constructor(){
     effect( () => {
       const token = this.authState().token;

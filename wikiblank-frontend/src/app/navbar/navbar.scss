@@ -1,6 +1,5 @@
-// Variabili per gestire facilmente le animazioni
 $transition-speed: 0.3s;
-$hover-scale: 1.15; // Ingrandisce del 15%
+$hover-scale: 1.15; 
 
 .navbar {
   display: flex;
@@ -28,7 +27,7 @@ $hover-scale: 1.15; // Ingrandisce del 15%
     color: white;
 
     .logo {
-      height: 45px; // Regola in base alla dimensione del tuo PNG
+      height: 45px; 
       width: auto;
       object-fit: contain;
     }
@@ -45,9 +44,8 @@ $hover-scale: 1.15; // Ingrandisce del 15%
   .navbar-menu {
     display: flex;
     align-items: center;
-    gap: 30px; // Distanza tra Home, Classifica e Logout
+    gap: 30px; 
     
-    // Applichiamo le regole in blocco ai link e al bottone
     a, .logout-btn {
       color: white;
       text-decoration: none;
@@ -56,15 +54,13 @@ $hover-scale: 1.15; // Ingrandisce del 15%
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px; // Spazio tra icona logout e testo
+      gap: 8px; 
       
-      // Resettiamo gli stili del bottone per farlo sembrare un link
       background: none;
       border: none;
       font-family: inherit;
       padding: 5px;
 
-      // La magia della transizione fluida
       transition: transform $transition-speed ease, 
                   font-weight $transition-speed ease, 
                   text-decoration $transition-speed ease;
@@ -78,31 +74,28 @@ $hover-scale: 1.15; // Ingrandisce del 15%
         transform: scale($hover-scale);
         font-weight: bold;
         text-decoration: underline;
-        text-underline-offset: 6px; // Abbassa la sottolineatura per renderla più elegante
-        text-decoration-thickness: 2px; // Spessore della sottolineatura
+        text-underline-offset: 6px; 
+        text-decoration-thickness: 2px; 
       }
 
-      // Gestione dimensione dell'icona di logout
       .logout-icon, .nav-icon {
         height: 30px;
         width: auto;
       }
     }
 
-    // Effetto rosso opzionale per il logout al passaggio del mouse
     .logout-btn:hover {
       color: #ff4c4c;
     }
   }
 
-  // Nasconde l'hamburger sul computer
   .mobile-toggle {
     display: none; 
   }
 }
 
 // ==========================================
-// RESPONSIVE MOBILE (Sotto i 768px)
+// RESPONSIVE MOBILE 
 // ==========================================
 @media screen and (max-width: 768px) {
   .navbar {
@@ -131,20 +124,19 @@ $hover-scale: 1.15; // Ingrandisce del 15%
     }
 
     .navbar-menu {
-      display: none; // Nascosto di default
+      display: none; 
       flex-direction: column;
       width: 100%;
       margin-top: 20px;
       gap: 20px;
 
-      // Ripristina l'allineamento per il cellulare
       a, .logout-btn {
         justify-content: flex-start;
         width: 100%;
       }
 
       &.open {
-        display: flex; // Appare quando si clicca l'hamburger
+        display: flex; 
       }
     }
   }

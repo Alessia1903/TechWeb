@@ -18,7 +18,6 @@ export class LoginComponent {
   restService = inject(RestBackendService);
   authService = inject(AuthService);
   
-  submitted = false;
   serverErrorMessage: string | null = null;
   
   loginForm = new FormGroup({
@@ -35,7 +34,6 @@ export class LoginComponent {
   });
   
   handleLogin() {
-    this.submitted = true;
     
     if(this.loginForm.invalid) {
       this.serverErrorMessage ="Attenzione: Inserisci username e password validi!";
@@ -47,7 +45,7 @@ export class LoginComponent {
       pwd: this.loginForm.value.pwd as string,
     }).subscribe({
       next: (response: any) => {
-        // Salviamo il Token JWT estratto dal JSON del tuo backend
+        // Salviamo il Token JWT estratto dal JSON del backend
         this.authService.updateToken(response.token); 
         this.toastr.success(`Benvenuto ${this.loginForm.value.usr}!`, 'Accesso Eseguito');
         setTimeout(() => {

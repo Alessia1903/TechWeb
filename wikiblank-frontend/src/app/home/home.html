@@ -42,21 +42,20 @@
             </tr>
           </thead>
           <tbody>
-            <!-- Attenzione: ora iteriamo su 'paginatedGames' invece di 'games' -->
             @for (game of paginatedGames; track game.id) {
               <tr>
                 <td><strong>{{ game.articleTitle }}</strong></td>
                 
                 <td>
                   @if (game.status === 'IN_PROGRESS') {
-                    <span class="badge warning">In Corso</span>
+                    <span class="badge toend">In Corso</span>
                   } @else if (game.status === 'WON') {
-                    <span class="badge success">Vittoria</span>
+                    <span class="badge win">Vittoria</span>
                   } @else if (game.status === 'SURRENDERED') {
-                    <span class="badge danger">Resa</span>
+                    <span class="badge loss">Resa</span>
                   }
                 </td>
-                <td>{{ formatDuration(game.startTime, game.endTime) }}</td>
+                <td>{{ game.startTime | timeDiff:game.endTime | formatTime }}</td>
                 <td>{{ game.attemptsCount || 0 }}</td>
               </tr>
             }

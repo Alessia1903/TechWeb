@@ -1,20 +1,17 @@
-/* Contenitore principale */
 .play-container {
-  max-width: 1200px; /* Allargato un po' per far respirare le due colonne */
+  max-width: 1200px; 
   margin: 0 auto;
   padding: 2rem;
 }
 
-/* --- NUOVO LAYOUT A DUE COLONNE --- */
 .game-layout {
   display: grid;
-  /* 3fr = 3 parti (75%), 1fr = 1 parte (25%) */
+  gap: 3rem;
   grid-template-columns: 3fr 1fr; 
-  gap: 3rem; /* Spazio tra il testo e la colonna di destra */
-  align-items: start; /* Allinea gli elementi in alto */
+  align-items: start; 
 }
 
-/* COLONNA SINISTRA (Testo in corso) E TESTO RIVELATO (Fine partita) */
+/* COLONNA SINISTRA: Testo */
 .left-column, .wiki-content-box {
   background-color: #ffffff;
   padding: 2.5rem; 
@@ -22,31 +19,29 @@
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); 
   border: 1px solid #eaeaea;
 
-  /* Stile interno (Titolo e Testo) */
+  /* Titolo e Testo */
   .wiki-title {
     font-size: 2.2rem;
     color: #2c3e50;
-    margin-top: 0; /* Assicura che sia allineato bene in alto */
+    margin-top: 0; 
     margin-bottom: 1.5rem;
     border-bottom: 2px solid #f0f0f0;
     padding-bottom: 1.5rem;
     
-    /* Colore speciale quando si vince */
     &.correct {
-      color: #1abc9c;
+      color: #7ed957;
     }
   }
 
   .wiki-text {
     line-height: 1.8;
-    font-size: 1.15rem; /* Leggermente ingrandito per una lettura ottimale */
+    font-size: 1.15rem; 
     color: #333;
     min-width: 0;
     overflow-wrap: break-word;
   }
 }
 
-/* Margine extra solo per il box di fine partita per staccarlo dalla game-over-card */
 .wiki-content-box {
   margin-top: 2rem;
 }
@@ -83,7 +78,7 @@
   }
 
 
-  /* Riga 1: Tentativi e Arresa */
+  /* Tentativi e resa */
   .game-stats-header {
     display: flex;
     justify-content: space-between;
@@ -115,7 +110,7 @@
     }
   }
 
-  /* Riga 2: Input per indovinare */
+  /* Input per indovinare */
   .guess-form {
     display: flex;
     flex-direction: column;
@@ -157,7 +152,7 @@
     }
   }
 
-  /* Riga 3: Parole Indovinate */
+  /* Parole Indovinate */
   .guessed-words-section {
     display: flex;
     flex-direction: column;
@@ -201,29 +196,26 @@
 
 /* --- CARD DI FINE PARTITA --- */
 .game-over-card {
-  /* Stile di default: Resa / Sconfitta */
   background-color: #fdf2f2; 
   border: 4px solid #fadbd8;
   border-radius: 16px;
   padding: 2.5rem;
   text-align: center;
   max-width: 600px;
-  margin: 0 auto 3rem auto; /* Centrata con un po' di margine in basso */
+  margin: 0 auto 3rem auto; 
   box-shadow: 0 10px 30px rgba(231, 76, 60, 0.1);
   transition: all 0.3s ease;
 
-  /* STILE VITTORIA: si attiva in automatico se c'è la classe .completed */
   &.completed {
-    background-color: #ffffff; /* Sfondino verde chiaro */
-    border-color: #aae094; /* Bordo verdino */
+    background-color: #ffffff; 
+    border-color: #aae094; 
     box-shadow: 0 10px 30px rgba(126, 217, 87, 0.15); 
 
     h2 {
-      color: #5ba83e; /* Verde scuro per il testo della vittoria */
+      color: #5ba83e; 
     }
   }
 
-  /* Bottone per tornare indietro */
   .btn-back {
     display: inline-flex;
     align-items: center;
@@ -237,7 +229,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    margin-top: 2rem; /* Lo stacca dal titolo sottostante */
+    margin-top: 2rem; 
 
     &:hover {
       background-color: #2980b9;
@@ -250,10 +242,9 @@
     }
   }
 
-  /* Testi della card */
   h2 {
     font-size: 2.2rem;
-    color: #e74c3c; /* Rosso di default per la resa */
+    color: #e74c3c; 
     margin-top: 0;
     margin-bottom: 1rem;
     font-weight: 800;
@@ -281,21 +272,15 @@
   }
 
   .right-column {
-    order: -1; /* Mantiene gli strumenti in cima all'articolo */
+    order: -1; 
     
-    /* --- DISATTIVIAMO LO STICKY E LE ALTEZZE DEL DESKTOP --- */
     position: relative; 
     top: auto; 
     height: auto; 
     z-index: 1;
 
     .tool-card {
-      /* La prima card (input) si comporterà normalmente */
-      
-      /* Limitiamo l'altezza della seconda card (parole indovinate) */
       &:last-child {
-        /* Su mobile, se indovina tante parole, la card si ferma a 250px e crea lo scroll interno, 
-           lasciando visibile l'articolo sottostante! */
         max-height: 250px; 
       }
     }

@@ -24,7 +24,7 @@ export class AuthController {
   }
 
   /**
-   * Issues a JWT token for the authenticated user
+   * Rilascia JWT per utente autenticato
    */
   static issueToken(username: string) {
     const secret = process.env.TOKEN_SECRET || 'segreto-di-riserva-locale';

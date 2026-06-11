@@ -1,9 +1,9 @@
 <div class="detail-container">
   
-  <button routerLink="/archive" class="btn-back">⬅️ Torna all'Archivio</button>
+  <button routerLink="/archive" class="btn-back">Torna all'Archivio</button>
 
   @if (isLoading) {
-    <div class="loading">⏳ Caricamento dettagli...</div>
+    <div class="loading">Caricamento dettagli...</div>
   }
 
   @if (!isLoading && gameDetails) {
@@ -17,7 +17,11 @@
       <div class="stats-grid">
         <div class="stat-box">
           <span class="label">Esito</span>
-          <span class="value">{{ translateStatus(gameDetails.status) }}</span>
+          @if (gameDetails.status === 'WON') {
+            <span class="badge win">Vittoria</span>
+          } @else if (gameDetails.status === 'SURRENDERED') {
+            <span class="badge loss">Resa</span>
+          }
         </div>
         <div class="stat-box">
           <span class="label">Tentativi</span>
@@ -25,7 +29,7 @@
         </div>
         <div class="stat-box">
           <span class="label">Tempo Impiegato</span>
-          <span class="value">{{ formatTime(gameDetails.timeTakenMs) }}</span>
+          <span class="value">{{ gameDetails.timeTakenMs | formatTime }}</span>
         </div>
       </div>
 

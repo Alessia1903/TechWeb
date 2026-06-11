@@ -27,7 +27,7 @@
   }
 
   .table-responsive {
-    overflow-x: auto; // Fondamentale per i cellulari: fa scrollare solo la tabella
+    overflow-x: auto; 
   }
 
   .archive-table {
@@ -51,26 +51,40 @@
     }
 
     tr {
+      border-bottom: 1px solid #f0f0f0;
       transition: background-color 0.2s ease;
       
-      &.won-row {
-        td:nth-child(2) {
-          color: #31980c; 
-          font-weight: 600;
-        }
-      }
-
-      &.lost-row {
-        td:nth-child(2) {
-          color: #e74c3c;
-          font-weight: 600;
-        }
+      &:hover {
+        background-color: #f8fbff; 
       }
     }
 
+    // Etichette di stato  
+    .badge {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+
+      &.win {
+        background-color: #e8f8f5;
+        color: #1abc9c;
+        border: 1px solid #a3e4d7;
+      }
+
+      &.loss {
+        background-color: #fdeded;
+        color: #e74c3c;
+        border: 1px solid #fadbd8;
+      }
+    }
+    
     .btn-details {
       padding: 6px 12px;
-      background-color: #007bff;
+      background-color: #3498db;
       color: white;
       border: none;
       border-radius: 4px;
@@ -78,6 +92,43 @@
       transition: background-color 0.2s;
 
       &:hover { background-color: #0056b3; }
+    }
+  }
+
+  /* Stile per i controlli di paginazione */
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eaeaea;
+
+    .page-info {
+      font-weight: 500;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .btn-page {
+      padding: 0.5rem 1rem;
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      color: #333;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background-color: #e9ecef;
+      }
+
+      &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
     }
   }
 
@@ -92,7 +143,7 @@
     font-size: 1rem;
   }
 
-  /* SEZIONE PROMOZIONALE CLASSIFICA (CALL TO ACTION) */
+  /* SEZIONE PROMOZIONALE ARCHIVIO */
   .archive-promo-section {
     background: linear-gradient(135deg, #fdfbf7 0%, #f5f7fa 100%);
     border-radius: 12px;
@@ -115,7 +166,6 @@
       font-size: 1.05rem;
     }
 
-    /* BOTTONE CLASSIFICA */
     .btn-archive {
       display: inline-block;
       font-size: 1.1rem;

@@ -11,3 +11,37 @@ body {
   background-attachment: fixed;
   background-color: #ffe4f5;
 }
+
+// STILE TESTO OSCURATO
+.redacted-word {
+  background-color: #cbd5e1; 
+  color: transparent; 
+  border-radius: 4px; 
+  user-select: none; 
+  margin: 0 2px; 
+  
+  &:hover {
+    background-color: #94a3b8;
+  }
+}
+
+.wiki-title {
+  font-size: 2.2rem;
+  color: #2c3e50;
+  margin-top: 0; 
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 1.5rem;
+  
+  &.correct {
+    color: #7ed957;
+  }
+}
+
+.wiki-text {
+  line-height: 1.8;
+  font-size: 1.15rem; 
+  color: #333;
+  min-width: 0;
+  overflow-wrap: break-word;
+}

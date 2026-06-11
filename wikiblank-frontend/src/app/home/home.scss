@@ -17,7 +17,6 @@
     }
   }
 
-  /* Stato di caricamento */
   .loading {
     text-align: center;
     font-size: 1.2rem;
@@ -58,16 +57,16 @@
       }
     }
 
-    /* Striscia laterale colorata per dare carattere alle card */
+    
     .active-game-card {
-      border-left: 6px solid #f39c12; // Arancione/Giallo per "In sospeso"
+      border-left: 6px solid #f39c12; 
     }
 
     .new-game-card {
-      border-left: 6px solid #3498db; // Blu per "Nuova partita"
+      border-left: 6px solid #3498db; 
     }
 
-    /* Stile base dei bottoni */
+    
     button {
       font-size: 1.1rem;
       font-weight: bold;
@@ -103,7 +102,7 @@
     }
   }
 
-  /* SEZIONE STORICO (Tabella) */
+  /* SEZIONE STORICO */
   .history-section {
     background-color: #ffffff;
     border-radius: 12px;
@@ -153,7 +152,7 @@
           transition: background-color 0.15s ease;
 
           &:hover {
-            background-color: #f8fbff; // Azzurrino leggerissimo all'hover
+            background-color: #f8fbff; 
           }
 
           td {
@@ -167,7 +166,7 @@
       }
     }
 
-    /* Etichette di stato (Badges) */
+    /* Etichette di stato */
     .badge {
       display: inline-block;
       padding: 0.4rem 0.8rem;
@@ -177,20 +176,19 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
 
-      &.warning {
+      &.toend {
         background-color: #fef5e7;
         color: #d68910;
         border: 1px solid #fad7a1;
       }
 
-      &.success {
+      &.win {
         background-color: #e8f8f5;
         color: #1abc9c;
         border: 1px solid #a3e4d7;
       }
 
-      /* Nuovo badge rosso per le partite abbandonate */
-      &.danger {
+      &.loss {
         background-color: #fdeded;
         color: #e74c3c;
         border: 1px solid #fadbd8;
@@ -255,11 +253,10 @@
     .history-section {
       padding: 1.5rem 1rem;
       
-      /* Permette alla tabella di scorrere orizzontalmente se lo schermo è troppo stretto */
       overflow-x: auto; 
       
       .history-table {
-        min-width: 600px; /* Forza una larghezza minima per evitare che le colonne si schiaccino */
+        min-width: 600px; 
       }
     }
   }

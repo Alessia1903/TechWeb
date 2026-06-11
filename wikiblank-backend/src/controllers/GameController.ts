@@ -58,9 +58,16 @@ export class GameController {
 
   // Oscura dinamicamente il testo
   private static obscureText(text: string, guessedWords: string[] = []): string {
-    return text.replace(/[a-zA-Z0-9À-ÿ]+/g, (match) => {
-      // Se la parola è nell'array delle indovinate, la mostriamo!
-      if (guessedWords.includes(match.toLowerCase())) {
+    // Pulizia preventiva: (tutto minuscolo, senza spazi, normalizzato)
+    const normalizedText = text.normalize('NFC');
+    const cleanGuessedWords = guessedWords.map(word => 
+      word.toLowerCase().trim().normalize('NFC')
+    );
+
+    return normalizedText.replace(/[a-zA-Z0-9À-ÿ]+/g, (match) => {
+      const lowerMatch = match.toLowerCase();
+      
+      if (cleanGuessedWords.includes(lowerMatch)) {
         return match; 
       } else {
         return '_'.repeat(match.length);
@@ -152,15 +159,15 @@ export class GameController {
     const game: any = await Game.findByPk(gameId);
     if (!game) throw new Error("Partita non trovata");
     
-    const newGuess: string = req.body.word ? req.body.word.trim().toLowerCase() : '';
+    const newGuess: string = req.body.word ? req.body.word.trim().toLowerCase().normalize('NFC') : '';
     if (!newGuess) throw new Error("Parola non valida");
 
     let guessedWords: string[] = game.guessedWords || [];
-    const originalText: string = game.originalText;
-    const articleTitle: string = game.articleTitle;
+    const originalText: string = (game.originalText || '').normalize('NFC');
+    const articleTitle: string = (game.articleTitle || '').normalize('NFC');
 
-     // 'i' case-insensitive
-    const guessRegex = new RegExp(`\\b${newGuess}\\b`, 'i');
+    const wordChars = "a-zA-Z0-9À-ÿ";
+    const guessRegex = new RegExp(`(?<![${wordChars}])${newGuess}(?![${wordChars}])`, 'i');   // 'i' case-insensitive
     const isCorrect = guessRegex.test(originalText) || guessRegex.test(articleTitle);
     
     if (!guessedWords.includes(newGuess)) {

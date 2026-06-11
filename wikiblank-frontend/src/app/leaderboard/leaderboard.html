@@ -4,7 +4,7 @@
 
   @if (isLoading) {
     <div class="loading-message">
-      <p>⏳ Caricamento della classifica in corso...</p>
+      <p>Caricamento della classifica in corso...</p>
     </div>
   } @else {
     <table class="leaderboard-table">
@@ -22,7 +22,7 @@
             <td><strong>{{ player.rank }}°</strong></td> 
             <td>{{ player.username }}</td>
             <td>{{ player.wins }}</td>
-            <td>{{ formatTime(player.averageTimeMs) }}</td>
+            <td>{{ player.averageTimeMs | formatTime }}</td>
           </tr>
         }
       </tbody>
@@ -33,7 +33,7 @@
         <p>
           <strong>E tu?</strong> Sei attualmente in <strong>{{ currentUserFallback.rank }}°</strong> posizione!
           <br>
-          <small>(Vittorie: {{ currentUserFallback.wins }} - Tempo medio: {{ formatTime(currentUserFallback.averageTimeMs) }})</small>
+          <small>(Vittorie: {{ currentUserFallback.wins }} - Tempo medio: {{ currentUserFallback.averageTimeMs | formatTime }})</small>
         </p>
       </div>
     }

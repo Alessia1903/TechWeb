@@ -7,7 +7,15 @@
       <label for="usr">Scegli uno Username</label>
       <input id="usr" type="text" formControlName="usr" placeholder="Username">
       @if (signupForm.get('usr')?.invalid && signupForm.get('usr')?.touched) {
-        <small class="error-message">Lo username è obbligatorio.</small>
+        <small class="error-message">
+          @if (signupForm.get('usr')?.errors?.['required']) {
+            Lo username è obbligatorio.
+          } @else if (signupForm.get('usr')?.errors?.['minlength']) {
+            Lo username deve avere almeno 3 caratteri.
+          } @else if (signupForm.get('usr')?.errors?.['maxlength']) {
+            Lo username non può superare i 20 caratteri.
+          }
+        </small>
       }
     </div>
 

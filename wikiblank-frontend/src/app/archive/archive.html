@@ -6,7 +6,7 @@
 
   @if (isLoading) {
     <div class="loading-state">
-      <p>⏳ Recupero dati dall'archivio in corso...</p>
+      <p>Recupero dati dall'archivio in corso...</p>
     </div>
   }
 
@@ -26,19 +26,23 @@
             <th>Tentativi</th>
             <th>Tempo</th>
             <th>Data e Ora</th>
-            <th>Azione</th>
+            <th></th>
           </tr>
         </thead>
         
         <tbody>
-          @for (game of archivedGames; track game.id) {
-            <tr 
-            [class.won-row]="game.status === 'WON'"
-            [class.lost-row]="game.status === 'SURRENDERED'">
+          @for (game of paginatedGames; track game.id) {
+            <tr>
               <td><strong>{{ game.player }}</strong></td>
-              <td>{{ translateStatus(game.status) }}</td>
+              <td>
+                @if (game.status === 'WON') {
+                  <span class="badge win">Vittoria</span>
+                } @else if (game.status === 'SURRENDERED') {
+                  <span class="badge loss">Resa</span>
+                }
+              </td>
               <td>{{ game.attemptsCount }}</td>
-              <td>{{ formatTime(game.timeTakenMs) }}</td>
+              <td>{{ game.timeTakenMs | formatTime }}</td>
               <td>{{ game.endTime | date:'dd/MM/yyyy, HH:mm' }}</td>
               
               <td>
@@ -50,6 +54,17 @@
           }
         </tbody>
       </table>
+
+      <!-- Controlli di paginazione -->
+      <div class="pagination-controls">
+        <button class="btn-page" [disabled]="currentPage === 1" (click)="prevPage()">
+          ⬅️ Precedente
+        </button>
+        <span class="page-info">Pagina {{ currentPage }} di {{ totalPages }}</span>
+        <button class="btn-page" [disabled]="currentPage === totalPages" (click)="nextPage()">
+          Successiva ➡️
+        </button>
+      </div>
     </div>
   }
 

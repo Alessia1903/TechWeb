@@ -8,12 +8,16 @@
       <div class="game-layout">
         
         <div class="left-column">
-          <h1 class="wiki-title">{{ gameData.obscuredTitle }}</h1>
+          <h1 
+            class="wiki-title" 
+            [class.correct]="gameData.title === gameData.obscuredTitle"
+            [innerHTML]="gameData.obscuredTitle | wikiFormat:true">
+          </h1>
 
           @if (gameData) {
             <div class="wiki-text" [innerHTML]="gameData.obscuredText | wikiFormat"></div>
           } @else {
-            <p>⏳ Caricamento del testo in corso...</p>
+            <p>Caricamento del testo in corso...</p>
           }
         </div>
 

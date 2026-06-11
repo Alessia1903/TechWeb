@@ -16,7 +16,6 @@ export class SignupComponent {
   router = inject(Router);
   restService = inject(RestBackendService);
   
-  submitted = false;
   serverErrorMessage: string | null = null;
   
   signupForm = new FormGroup({
@@ -33,7 +32,6 @@ export class SignupComponent {
   });
   
   handleSignup() {
-    this.submitted = true;
     
     if(this.signupForm.invalid){
       this.serverErrorMessage = "I dati che hai inserito non sono validi. Controlla i campi evidenziati.";
