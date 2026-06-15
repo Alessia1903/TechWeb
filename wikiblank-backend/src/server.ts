@@ -36,6 +36,11 @@ app.use(enforceAuthentication);
 app.use('/', gameRouter);
 
 // GESTIONE DEGLI ERRORI
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const error: any = new Error(`La risorsa richiesta (${req.originalUrl}) non esiste.`);
+  error.status = 404;
+  next(error); 
+});
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error("Errore catturato:", err);
   

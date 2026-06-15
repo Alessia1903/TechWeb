@@ -123,8 +123,6 @@ export class GameController {
     }
 
     const article = await this.fetchRandomWikipediaArticle();
-    const obscuredText = this.obscureText(article.text);
-    const obscuredTitle = this.obscureText(article.title);
 
     let game = Game.build({
       articleTitle: article.title, 
